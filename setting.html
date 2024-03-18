@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+  <title>Xihu Dashboard</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background-color: #0a0a0a;
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+
+    .sidebar {
+      background-color: #0e0e0e;
+      width: 220px;
+      height: 100%;
+      /* padding: 20px; */
+      position: fixed;
+      padding-bottom: 10%;
+      padding-top: 10%;
+      border-left: hidden;
+      border-top: hidden;
+      border-bottom: hidden;
+      padding-top: 20px;
+      overflow: hidden;
+      padding-right: 20px;
+      padding-left: 20px;
+  }
+
+    .top-bar {
+      padding: 20px 30px;
+      margin-left: 220px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-top: 40px;
+    }
+
+    .top-bar #upgrade {
+      background: linear-gradient(91deg,#181729 -8.29%,#7c17cc 106.01%);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .top-bar #not-btn {
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: transparent;
+      border: 1px solid gray;
+      margin-left: 5px;
+    }
+
+    .profile-card {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .profile-card img {
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+    }
+
+    .profile-card .card-heading {
+      margin: 10px 0 0 0;
+      font-size: 17px;
+    }
+
+    .profile-card p {
+      margin: 5px 0;
+      font-size: 14px;
+    }
+
+    .profile-card button {
+      padding: 6px;
+      font-size: 10px;
+      background: #141414;
+      border: 1px solid #202020;
+      border-radius: 5px;
+      color: white;
+  }
+
+    .menubar {
+      padding-left: 20px;
+      padding-right: 20px;
+      position: absolute;
+      z-index: 100;
+    }
+
+    .menubar a {
+      margin-left: 7px;
+    }
+
+    .menu-item {
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+
+      padding-left: 9px;
+      padding-right: 9px;
+      padding-bottom: 5px;
+      padding-top: 5px;
+    }
+
+    .menu-item a {
+      margin-top: 0px;
+      margin-bottom: 0px;
+      text-decoration: none;
+      color: white;
+    }
+
+    .menu-item:hover {
+      background-color: #293060;
+      border-radius: 6px;
+    }
+
+    .hover-item {
+      background-color: #293060;
+      border-radius: 6px;
+    }
+
+    .content {
+      margin-left: 250px;
+      padding: 20px;
+    }
+
+    .welcome {
+      font-size: 24px;
+    }
+
+    .top-info {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .logo-container img {
+      width: 100%;
+    }
+
+    .gradient-background {
+      position: relative;
+      margin-bottom: 45px;
+    }
+
+    .profile-card {
+      position: relative;
+      z-index: 2;
+      /* Ensures the profile card is above the background image */
+    }
+
+    .gradient-background #gradient {
+      position: absolute;
+      top: -140px;
+      left: -60px;
+      width: 310%;
+      z-index: -1;
+      opacity: 40%;
+    }
+
+    #cross-btn {
+      display: flex;
+      background: #141414;
+      border: 2px solid #202020;
+      color: white;
+      border-radius: 9px;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      margin-left: auto;
+      display: none;
+  }
+
+    /* Styles that apply to all screen sizes */
+    .sidebar {
+      display: block;
+      /* Show sidebar by default */
+    }
+
+    #hamburger-btn {
+      display: none;
+      /* Hide hamburger button by default */
+    }
+
+    #cross-btn {
+      display: none;
+      /* Ensure cross button is hidden by default */
+    }
+
+
+
+    /* Small screens */
+    @media (max-width: 767px) {
+      .sidebar {
+        width: 220px;
+        /* Set sidebar width */
+        position: fixed;
+        top: 0;
+        left: 0;
+        /* Position sidebar to the left */
+        height: 100%;
+        /* Full height */
+        z-index: 1000;
+        /* Ensure sidebar is above other content */
+        box-shadow: 10px 0 10px rgba(0,0,0,.35);
+        transform: translateX(-100%);
+        /* Start off-screen */
+        transition: transform 0.3s ease-in-out;
+        /* Smooth transition */
+        display: block;
+        /* Ensure sidebar is display block for animation */
+        border-radius: 30px;
+      }
+
+      .sidebar.active {
+        transform: translateX(0%);
+        /* Slide in */
+      }
+
+      #hamburger-btn {
+        display: block;
+        z-index: 1001;
+
+        border-radius: 9px;
+        border: none;
+        background: #141414;
+        border: 2px solid #202020;
+        padding: 5px 8px;
+        position: absolute;
+        left: 25px;
+      }
+
+      #cross-btn {
+        display: none;
+        /* Initially hidden, shown when sidebar is active */
+      }
+
+      #cross-btn.show {
+        display: flex;
+        /* Show when sidebar is open */
+      }
+
+      .top-bar {
+
+        margin-left: 0px;
+        display: flex;
+        align-items: center;
+        padding-top: 40px;
+        justify-content: center;
+
+      }
+
+      .top-btns {
+        display: none;
+
+      }
+
+      .content {
+        margin-left: 0px;
+      }
+    }
+
+
+    /* Hide the cross button on screens wider than 767px */
+    @media (min-width: 768px) {
+      #cross-btn {
+        display: none !important;
+        /* Use !important to override inline styles if necessary */
+      }
+
+      #hamburger-btn {
+        display: none !important;
+        /* Ensure the hamburger button is also hidden on larger screens */
+      }
+
+      .sidebar {
+        transform: none !important;
+        /* Reset any transformation applied on smaller screens */
+        display: block !important;
+        /* Ensure the sidebar is always shown on larger screens */
+      }
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0px 0 30px 0;
+    }
+
+    #logo-img {
+      width: 38px;
+      height: 38px;
+
+    }
+
+    #logo-heading {
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    /* --------------------------------------------social page------------------------------------- */
+    main {
+      width: 100vw;
+      margin-top: 62px;
+      position: relative;
+      height: calc(100vh - 62px);
+      overflow: scroll;
+      overflow-x: hidden;
+    }
+
+    .container {
+      display: flex;
+      color: white;
+    }
+
+    input:focus {
+      outline: none;
+    }
+
+    .sidebar-item {
+      padding: 0px 12px;
+      border-radius: 4px;
+      color: #ffffff;
+    }
+
+    /******************************Dropdown Icon*******************/
+
+    .dropdown {
+      width: 100%;
+      background-color: #0c0c0c;
+      color: #fff;
+      border-radius: 5px;
+      cursor: pointer;
+      position: relative;
+      margin-bottom: 20px;
+  }
+
+    .dropdown-header {
+      padding: 7px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    #dropdown-title {
+      display: flex;
+      align-items: center;
+      font-size: 0.94rem;
+      text-wrap: nowrap;
+    }
+
+    #dropdown-title svg {
+      margin-right: 5px;
+    }
+
+    .dropdown-arrow {
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .dropdown.open .dropdown-arrow {
+      transform: rotate(180deg);
+    }
+
+    .dropdown-list {
+      border-top: 1px solid #3b3b3b;
+      height: 125px;
+      overflow-y: scroll;
+      position: absolute;
+      background-color: #0c0c0c;
+      width: 100%;
+      top: 89%;
+      margin-top: 7px;
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+    .dropdown-item {
+      padding: 10px;
+      font-size: 0.8rem;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+    }
+
+    .dropdown-item svg {
+      margin-right: 5px;
+    }
+
+    .dropdown-item:hover {
+      background: #3747b2;
+    }
+
+    /******************************link input*******************/
+    .social-container {
+      display: flex;
+      flex-direction: column;
+      margin-top: 40px;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    #link-input {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      outline: none;
+      font-size: 0.8rem;
+      background-color: #0c0c0c;
+      flex-grow: 0;
+      color: #ffff;
+      margin-bottom: 10px;
+  }
+
+    /******************************add button*******************/
+    #add-btn {
+      padding: 10px 24px;
+      border-radius: 5px;
+      background-color: #181818;
+      border: 2px solid transparent;
+      color: #fff;
+      cursor: pointer;
+      width: 100%;
+      margin-bottom: 19.92px;
+  }
+
+    /******************************Added Link*******************/
+    .link-container {
+      margin-top: 50px;
+    }
+
+    .added-link-item {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      width: 80%;
+      margin: 0 auto;
+      background-color: #111;
+      border-radius: 12px;
+      height: 70px;
+  }
+
+    .added-link-header {
+      padding: 7px 15px;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      border-radius: 12px;
+    }
+
+    /* .added-link-header svg {
+        margin-right: 3px;
+      } */
+
+      .added-link-input {
+        width: 68%;
+        padding: 10px;
+        border: none;
+        border-radius: 12px;
+        outline: none;
+        font-size: 0.8rem;
+        background-color: #0c0c0c;
+        flex-grow: 0;
+        color: #fff;
+        margin: 11px 0px;
+    }
+
+    #rmv-btn {
+      padding: 11px;
+      border: none;
+      border-radius: 12px;
+      background: none;
+      /* color: #fff; */
+      cursor: pointer;
+    }
+
+    @media (min-width: 768px) and (max-width: 1023px) {}
+
+    @media screen and (max-width: 768px) {
+      .dropdown {
+        width: 100%;
+      }
+
+      #link-input {
+        width: 100%;
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
+
+      #add-btn {
+        width: 100%;
+      }
+
+      .added-link-item {
+        /* flex-wrap: wrap; */
+        margin-bottom: 30px;
+      }
+
+      .link-container {
+        margin-top: 80px;
+      }
+
+      .added-link-header {
+        font-size: 0.6rem;
+      }
+
+      .added-link-input {
+        width: 50%;
+      }
+    }
+
+    /* Styles the scrollbar track for .dropdown-list */
+    .dropdown-list::-webkit-scrollbar {
+      background-color: #3b3b3b;
+      border-top-right-radius: 12px;
+      border-bottom-right-radius: 12px;
+    }
+
+    /* Styles the scrollbar handle for .dropdown-list */
+    .dropdown-list::-webkit-scrollbar-thumb {
+      background-color: #242424;
+      border-radius: 15px;
+    }
+
+    /* Styles the scrollbar button (arrows) for .dropdown-list */
+    .dropdown-list::-webkit-scrollbar-button {
+      background-color: #3b3b3b;
+      border-top-right-radius: 12px;
+      /* Color of the scrollbar button */
+    }
+
+    /* Styles the corner where horizontal and vertical scrollbars meet for .dropdown-list */
+    .dropdown-list::-webkit-scrollbar-corner {
+      background-color: #3b3b3b;
+      border-top-right-radius: 12px;
+      /* Color of the scrollbar corner */
+    }
+
+    /* Styles the scrollbar track for main */
+    main::-webkit-scrollbar {
+      display: none;
+    }
+
+    .connects-container {
+      padding: 8px 12px;
+      border-radius: 4px;
+      background-color: #111;
+      color: white;
+      box-sizing: border-box;
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      width: 80%;
+      margin: 0 auto;
+  }
+
+    h2 {
+      text-align: center;
+    }
+
+    h2 svg {
+      margin-right: 10px;
+    }
+
+    .icon-container {
+    border: 1px solid #8080800f;
+    border-radius: 12px;
+    /* padding: 0px 0px 0px 0px; */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    margin-right: 10px;
+    display: flex;
+    padding: 10px;
+    align-items: center;
+}
+
+    .icon-container svg {
+      margin-right: 3px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="sidebar">
+    <button id="cross-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 15 15">
+        <path fill="currentColor"
+          d="M3.64 2.27L7.5 6.13l3.84-3.84A.92.92 0 0 1 12 2a1 1 0 0 1 1 1a.9.9 0 0 1-.27.66L8.84 7.5l3.89 3.89A.9.9 0 0 1 13 12a1 1 0 0 1-1 1a.92.92 0 0 1-.69-.27L7.5 8.87l-3.85 3.85A.92.92 0 0 1 3 13a1 1 0 0 1-1-1a.9.9 0 0 1 .27-.66L6.16 7.5L2.27 3.61A.9.9 0 0 1 2 3a1 1 0 0 1 1-1c.24.003.47.1.64.27" />
+      </svg>
+    </button>
+    <div class="logo-container">
+      <img id="logo-img" src="logo.png" alt="" />
+      <p id="logo-heading">twiz</p>
+    </div>
+    <div class="gradient-background">
+      <img id="gradient" src="Gradient.png" alt="" />
+      <div class="profile-card">
+        <img
+          src="https://i.pinimg.com/originals/b8/4c/15/b84c1524359fe01b397af3ae210c4f36.gif"
+          alt="Profile Picture" />
+        <p class="card-heading">Jacob Jones</p>
+        <button>Edit Profile</button>
+      </div>
+    </div>
+    <div class="menubar">
+      <div class="menu-item ">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+          <path fill="white" d="M3 13h8V3H3zm0 8h8v-6H3zm10 0h8V11h-8zm0-18v6h8V3z" />
+        </svg>
+        <a href="Dashboard.html">Dashboard</a>
+      </div>
+      <div class="menu-item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+          <path fill="white"
+            d="M2 6c0-1.505.78-3.08 2-4c0 .845.69 2 2 2a3 3 0 0 1 3 3c0 .386-.079.752-.212 1.091a74.515 74.515 0 0 1 2.191 1.808l-2.08 2.08a75.852 75.852 0 0 1-1.808-2.191A2.977 2.977 0 0 1 6 10c-2.21 0-4-1.79-4-4m12.152 6.848l1.341-1.341A4.446 4.446 0 0 0 17.5 12A4.5 4.5 0 0 0 22 7.5c0-.725-.188-1.401-.493-2.007L18 9l-2-2l3.507-3.507A4.446 4.446 0 0 0 17.5 3A4.5 4.5 0 0 0 13 7.5c0 .725.188 1.401.493 2.007L3 20l2 2l6.848-6.848a68.562 68.562 0 0 0 5.977 5.449l1.425 1.149l1.5-1.5l-1.149-1.425a68.562 68.562 0 0 0-5.449-5.977" />
+        </svg>
+        <a href="customize.html">Customize</a>
+      </div>
+      <div class="menu-item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+          <path fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M10 5a2 2 0 1 0 4 0a2 2 0 1 0-4 0M3 19a2 2 0 1 0 4 0a2 2 0 1 0-4 0m14 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0m-8-5a3 3 0 1 0 6 0a3 3 0 1 0-6 0m3-7v4m-5.3 6.8l2.8-2m7.8 2l-2.8-2" />
+        </svg>
+        <a href="social.html">Socials</a>
+      </div>
+      <div class="menu-item hover-item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+          <path fill="white"
+            d="M19.9 12.66a1 1 0 0 1 0-1.32l1.28-1.44a1 1 0 0 0 .12-1.17l-2-3.46a1 1 0 0 0-1.07-.48l-1.88.38a1 1 0 0 1-1.15-.66l-.61-1.83a1 1 0 0 0-.95-.68h-4a1 1 0 0 0-1 .68l-.56 1.83a1 1 0 0 1-1.15.66L5 4.79a1 1 0 0 0-1 .48L2 8.73a1 1 0 0 0 .1 1.17l1.27 1.44a1 1 0 0 1 0 1.32L2.1 14.1a1 1 0 0 0-.1 1.17l2 3.46a1 1 0 0 0 1.07.48l1.88-.38a1 1 0 0 1 1.15.66l.61 1.83a1 1 0 0 0 1 .68h4a1 1 0 0 0 .95-.68l.61-1.83a1 1 0 0 1 1.15-.66l1.88.38a1 1 0 0 0 1.07-.48l2-3.46a1 1 0 0 0-.12-1.17ZM18.41 14l.8.9l-1.28 2.22l-1.18-.24a3 3 0 0 0-3.45 2L12.92 20h-2.56L10 18.86a3 3 0 0 0-3.45-2l-1.18.24l-1.3-2.21l.8-.9a3 3 0 0 0 0-4l-.8-.9l1.28-2.2l1.18.24a3 3 0 0 0 3.45-2L10.36 4h2.56l.38 1.14a3 3 0 0 0 3.45 2l1.18-.24l1.28 2.22l-.8.9a3 3 0 0 0 0 3.98m-6.77-6a4 4 0 1 0 4 4a4 4 0 0 0-4-4m0 6a2 2 0 1 1 2-2a2 2 0 0 1-2 2" />
+        </svg>
+        <a href="setting.html">Settings</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="top-bar">
+    <button id="hamburger-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+        <path fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M3 17h18M3 12h18M3 7h18" />
+      </svg>
+    </button>
+    <div class="welcome">Welcome, Jacob</div>
+    <div class="top-btns">
+      <button id="upgrade">Upgrade</button>
+      <button id="not-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" style="
+        margin-top: 3px;
+    ">
+          <g fill="none">
+            <path
+              d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" />
+            <path fill="white"
+              d="M15 19a2 2 0 0 1-1.85 1.995L13 21h-2a2 2 0 0 1-1.995-1.85L9 19zM12 2a7 7 0 0 1 6.996 6.76L19 9v3.764l1.822 3.644a1.1 1.1 0 0 1-.869 1.586l-.115.006H4.162a1.1 1.1 0 0 1-1.03-1.487l.046-.105L5 12.764V9a7 7 0 0 1 7-7" />
+          </g>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="content">
+    <div class="socials">
+      <div class="connects-container">
+
+
+  <script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const hamburgerBtn = document.getElementById("hamburger-btn");
+      const crossBtn = document.getElementById("cross-btn");
+      const sidebar = document.querySelector(".sidebar");
+
+      function toggleSidebar() {
+        sidebar.classList.toggle("active");
+        crossBtn.classList.toggle("show"); // Use class to manage visibility
+        hamburgerBtn.style.display = sidebar.classList.contains("active") ? "none" : "block";
+      }
+
+      hamburgerBtn.addEventListener("click", toggleSidebar);
+      crossBtn.addEventListener("click", function () {
+        sidebar.classList.remove("active");
+        this.classList.remove("show"); // Hide cross button
+        hamburgerBtn.style.display = "block"; // Show hamburger button
+      });
+    });
+
+    // Clicking outside the dropdown will close it
+    window.addEventListener("click", (e) => {
+      if (!dropdown.contains(e.target)) {
+        dropdownList.style.display = "none";
+        dropdown.classList.remove("open"); // Remove the "open" class when clicking outside
+        dropdownArrow.classList.remove("rotate"); // Remove the "rotate" class when clicking outside
+        updateAddButtonState();
+      }
+    });
+  </script>
+</body>
+
+</html>

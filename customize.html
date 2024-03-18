@@ -1,0 +1,2829 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <title>Xihu Dashboard</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background-color: #0a0a0a;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+
+        .sidebar {
+            background-color: #0e0e0e;
+            width: 220px;
+            height: 100%;
+            padding: 20px;
+            position: fixed;
+            padding-bottom: 4%;
+            padding-top: 10%;
+            border-left: hidden;
+            border-top: hidden;
+            border-bottom: hidden;
+            padding-top: 20px;
+            overflow: hidden;
+            padding-right: 20px;
+            padding-left: 20px;
+        }
+
+        .top-bar {
+            padding: 20px 30px;
+            margin-left: 220px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding-top: 40px;
+        }
+
+        .top-bar #upgrade {
+            background: linear-gradient(91deg, #181729 -8.29%, #7c17cc 106.01%);
+            border-radius: 10px;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .top-bar #not-btn {
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: transparent;
+            border: 1px solid gray;
+            margin-left: 5px;
+        }
+
+        .profile-card {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .profile-card img {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+        }
+
+        .profile-card .card-heading {
+            margin: 10px 0 0 0;
+            font-size: 17px;
+        }
+
+        .profile-card p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+        /* Thin scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            /* Width of the scrollbar */
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: #0c0d0e;
+            /* Background color of the track */
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #222;
+            /* Color of the scrollbar handle */
+        }
+
+        .profile-card button {
+            border: none;
+            padding: 6px;
+            font-size: 10px;
+            background: #141414;
+            border: 1px solid #202020;
+            border-radius: 5px;
+            color: #d1d1d1;
+        }
+
+        .menubar {
+            padding-left: 20px;
+            padding-right: 20px;
+
+        }
+
+        .menubar a {
+            margin-left: 7px;
+        }
+
+        .menu-item {
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+
+            padding-left: 9px;
+            padding-right: 9px;
+            padding-bottom: 5px;
+            padding-top: 5px;
+        }
+
+        .menu-item a {
+            margin-top: 0px;
+            margin-bottom: 0px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .menu-item:hover {
+            background-color: #293060;
+            border-radius: 6px;
+        }
+
+        .hover-item {
+            background-color: #293060;
+            border-radius: 6px;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .welcome {
+            font-size: 24px;
+        }
+
+        .top-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .logo-container img {
+            width: 100%;
+        }
+
+        .gradient-background {
+            position: relative;
+            margin-bottom: 45px;
+        }
+
+        .profile-card {
+            position: relative;
+            z-index: 2;
+            /* Ensures the profile card is above the background image */
+        }
+
+        .gradient-background #gradient {
+            position: absolute;
+            top: -140px;
+            left: -60px;
+            width: 310%;
+            z-index: -1;
+            opacity: 40%;
+        }
+
+        #cross-btn {
+            display: flex;
+            background: #141414;
+            border: 2px solid #202020;
+            border-radius: 9px;
+            align-items: center;
+            justify-content: center;
+            padding: 4px;
+            margin-left: auto;
+            display: none;
+            color: white;
+        }
+
+        /* Styles that apply to all screen sizes */
+        .sidebar {
+            display: block;
+            /* Show sidebar by default */
+        }
+
+        #hamburger-btn {
+            display: none;
+            /* Hide hamburger button by default */
+        }
+
+        #cross-btn {
+            display: none;
+            /* Ensure cross button is hidden by default */
+        }
+
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0px 0 30px 0;
+        }
+
+        #logo-img {
+            width: 38px;
+            height: 38px;
+
+        }
+
+        #logo-heading {
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        /* Small screens */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 220px;
+                /* Set sidebar width */
+                position: fixed;
+                top: 0;
+                left: 0;
+                box-shadow: 10px 0 10px rgba(0, 0, 0, .35);
+                /* Position sidebar to the left */
+                height: 100%;
+                /* Full height */
+                z-index: 1000;
+                /* Ensure sidebar is above other content */
+                transform: translateX(-100%);
+                /* Start off-screen */
+                transition: transform 0.3s ease-in-out;
+                /* Smooth transition */
+                display: block;
+                /* Ensure sidebar is display block for animation */
+                border-radius: 30px;
+            }
+
+            .sidebar.active {
+                transform: translateX(0%);
+                /* Slide in */
+            }
+
+            #hamburger-btn {
+                display: block;
+                z-index: 1001;
+
+                border-radius: 9px;
+                border: none;
+                background: #141414;
+                border: 2px solid #202020;
+                padding: 5px 8px;
+                position: absolute;
+                left: 25px;
+            }
+
+            #cross-btn {
+                display: none;
+                /* Initially hidden, shown when sidebar is active */
+            }
+
+            #cross-btn.show {
+                display: flex;
+                /* Show when sidebar is open */
+            }
+
+            .top-bar {
+
+                margin-left: 0px;
+                display: flex;
+                align-items: center;
+                padding-top: 40px;
+                justify-content: center;
+
+            }
+
+            .top-btns {
+                display: none;
+
+            }
+
+            .content {
+                margin-left: 0;
+            }
+
+        }
+
+
+        /* Hide the cross button on screens wider than 767px */
+        @media (min-width: 769px) {
+            #cross-btn {
+                display: none !important;
+                /* Use !important to override inline styles if necessary */
+            }
+
+            #hamburger-btn {
+                display: none !important;
+                /* Ensure the hamburger button is also hidden on larger screens */
+            }
+
+            .sidebar {
+                transform: none !important;
+                /* Reset any transformation applied on smaller screens */
+                display: block !important;
+                /* Ensure the sidebar is always shown on larger screens */
+            }
+        }
+
+
+        /*-------------------------------------------------------------------customize page--------------------------------------------------*/
+        .menu-container {
+            width: 90%;
+            margin: auto;
+        }
+
+        .menu-items {
+            margin-bottom: 10px;
+        }
+
+        .menu-item-header {
+            padding: 10px 15px;
+            background-color: #111;
+            border-radius: 15px;
+            cursor: pointer;
+            display: flex;
+            align-content: center;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .menu-item-header i {
+            transition: transform 0.3s ease;
+        }
+
+        .menu-item-header.active i {
+            transform: rotate(180deg);
+        }
+
+        .menu-item-content {
+            padding: 10px;
+            background-color: #111;
+            border-radius: 15px;
+            border-top: none;
+            display: none;
+            padding: 10px;
+            padding-bottom: 30px;
+            border-radius: 15px;
+            margin-top: 7px;
+        }
+
+        .menu-item-content.active {
+            display: block;
+        }
+
+        /******************************Profile Customization*******************/
+        .profile-customization-container {
+            max-width: 400px;
+            margin: 30px auto;
+            color: #fff;
+        }
+
+        .header h2,
+        .header p {
+            text-align: center;
+        }
+
+        .profile-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-top: 15px;
+        }
+
+        input[type="text"],
+        input[type="url"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            background-color: #0c0c0c;
+            color: #fff;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #4555c1;
+
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        input[type="submit"] {
+            padding: 10px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 5px;
+            background: #6a4360;
+            /* Button color */
+            color: #fff;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background: #583850;
+        }
+
+        span {
+            font-size: 0.8em;
+
+            /* Accent text color */
+        }
+
+        /******************************customization button*******************/
+        .customize-button {
+            z-index: 1;
+            cursor: pointer;
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            position: fixed;
+            right: -50px;
+            top: 50%;
+            transform: translateY(-50%) rotate(-90deg);
+        }
+
+        /*** the right sidebar  ***/
+
+        .right-sidebar.open {
+            right: 0;
+        }
+
+        .sidebar-header {
+            padding: 10px;
+            color: white;
+            text-align: right;
+        }
+
+        #close-sidebar-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 30px;
+        }
+
+        /*** content in the right sidebar ***/
+        .sidebar-item {
+            padding: 0px 12px;
+
+            color: #ffffff;
+            width: 50%;
+        }
+
+        /* Label Styles */
+        .right-sidebar label {
+            display: block;
+            margin-bottom: 5px;
+
+            color: #ffffff;
+            font-size: 14px;
+        }
+
+        /******************************Custom curser*******************/
+
+        /* Style for the custom file input button */
+        .custom-file-upload {
+            border: 1px solid #4a4a4a;
+            display: inline-block;
+            padding: 6px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            background-color: #3b3b3b;
+            margin-right: 5px;
+            color: white;
+            font-size: 14px;
+        }
+
+        /* Hide the default file input */
+        .sidebar-item input[type="file"] {
+            width: 0.1px;
+            height: 0.1px;
+            opacity: 0;
+            overflow: hidden;
+            position: absolute;
+            z-index: -1;
+        }
+
+        /* Custom label style with an icon */
+        .sidebar-item label {
+            display: block;
+            color: #ffffff;
+            font-size: 16px;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+
+        .icon-label-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+            margin-top: 5px;
+        }
+
+        .icon-label-container label {
+            margin-left: 2px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .icon-label-container label p {
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+
+        /* Style for the custom file input button */
+        .sidebar-item .custom-file-upload {
+            display: none;
+        }
+
+        /* Style for the filename display */
+        .sidebar-item .file-name-display {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            background-color: #0c0c0c;
+            color: white;
+            font-size: 11px;
+            box-sizing: border-box;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Styling the 'No file chosen' text */
+        .sidebar-item .no-file {
+            color: #777;
+        }
+
+        #filename p,
+        #filename2 p,
+        #filename5 p {
+            margin-top: 4px;
+            margin-bottom: 4px;
+        }
+
+        /******************************Discord input*******************/
+        .discord-heading svg {
+            margin-top: 5px;
+            margin-right: 4px;
+            margin-left: 7px;
+        }
+
+        .dropdown {
+            padding: 0;
+            color: #fff;
+            border-radius: 12px;
+
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .dropdown-header {
+            padding: 10px 12px;
+            background-color: #0c0c0c;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown-title {
+            margin: 0;
+        }
+
+        .dropdown-icon {
+            display: flex;
+        }
+
+        .dropdown-arrow {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .dropdown.open .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-list {
+            background-color: #293060;
+            margin-top: 7px;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown-item {
+            padding: 10px;
+            font-size: 0.8rem;
+            transition: background 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background: #191439;
+            border-radius: 9px;
+        }
+
+        /******************************Profile Opacity, Volume, Profile blur Slider*******************/
+
+        .ranger-container {
+            margin-top: 10px;
+        }
+
+        .rangeBox {
+            position: relative;
+            align-content: center;
+        }
+
+        #rangeVal,
+        #rangeVal2,
+        #rangeVal3,
+        #rangeVal5,
+        #rangeVal7 {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 2px;
+            width: 46px;
+            box-sizing: border-box;
+            text-align: center;
+            color: white;
+            background-color: #0c0c0c;
+            font-size: 12.5px;
+        }
+
+        #rangeVal:before,
+        #rangeVal2:before,
+        #rangeVal3:before,
+        #rangeVal5:before,
+        #rangeVal7:before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: -5px;
+            transform: translateY(-50%) rotate(45deg);
+            width: 10px;
+            height: 10px;
+            background-color: #0c0c0c;
+        }
+
+        .range-row {
+            margin-right: 65px;
+        }
+
+        .range {
+            display: inline-block;
+            width: 100%;
+            height: 8px;
+            background-color: #0c0c0c;
+            -webkit-appearance: none;
+            outline: none;
+            border-radius: 7px;
+            margin-right: -50px;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.4s ease-in-out;
+        }
+
+        .range:hover {
+            /* opacity: 1; */
+        }
+
+        .range::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+        }
+
+        .profile-opacity-heading {
+            margin-top: 7px;
+        }
+
+        .profile-opacity-heading svg {
+            margin-top: 5px;
+            margin-right: 1px;
+            margin-left: 3px;
+        }
+
+        /******************************Background Effect*******************/
+
+        .effect-heading {
+            /* margin-top: -20px; */
+        }
+
+        .effect-heading svg {
+            margin-top: 5px;
+            margin-right: 1px;
+            margin-left: 7px;
+        }
+
+        .dropdown-effect {
+            padding: 0;
+
+            color: #fff;
+            border-radius: 5px;
+
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .dropdown-effect-header {
+            padding: 10px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #0c0c0c;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown-effect-title {
+            margin: 0;
+        }
+
+        .dropdown-effect-icon {
+            display: flex;
+        }
+
+        .dropdown-effect-arrow {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .dropdown-effect.open .dropdown-effect-arrow {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-effect-list {
+            background-color: #293060;
+            margin-top: 7px;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown-effect-item {
+            padding: 10px;
+            font-size: 0.8rem;
+            transition: background 0.2s;
+        }
+
+        .dropdown-effect-item:hover {
+            background: #191439;
+            border-radius: 9px;
+        }
+
+        /******************************Badges Theme*******************/
+        .badge-heading {
+            margin-top: 5px;
+        }
+
+        .badge-heading svg {
+            margin-top: 5px;
+            margin-right: 1px;
+            margin-left: 7px;
+        }
+
+        .dropdown-badge {
+            padding: 0;
+
+            color: #fff;
+            border-radius: 5px;
+
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .dropdown-badge-header {
+            padding: 10px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #0c0c0c;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown-badge-title {
+            margin: 0;
+        }
+
+        .dropdown-badge-icon {
+            display: flex;
+        }
+
+        .dropdown-badge-arrow {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .dropdown-badge.open .dropdown-badge-arrow {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-badge-list {
+            background-color: #293060;
+            margin-top: 7px;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown-badge-item {
+            padding: 10px;
+            font-size: 0.8rem;
+            transition: background 0.2s;
+        }
+
+        .dropdown-badge-item:hover {
+            background: #191439;
+            border-radius: 9px;
+        }
+
+        /******************************Color Input*******************/
+
+        .color-input-container {
+            display: flex;
+            align-items: center;
+            background-color: #0c0c0c;
+            border-radius: 12px;
+            padding: 9px 12px;
+            font-size: 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            justify-content: space-between;
+        }
+
+        .picker-span {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .color-picker-label {}
+
+        .color-input {
+            background-color: transparent;
+            border: none;
+            color: white;
+            text-align: center;
+            width: 25px;
+            height: 22px;
+        }
+
+        .color-dropper-icon {
+            cursor: pointer;
+        }
+
+        .color-input::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        .color-input::-webkit-color-swatch {
+            border: none;
+            border-radius: 100%;
+        }
+
+        .color-input::-moz-color-swatch {
+            border: none;
+            border-radius: 100%;
+        }
+
+        #result,
+        #result2 {
+            display: inline-block;
+            width: 100px;
+
+            color: white;
+        }
+
+        .color-heading {
+            margin-top: 2px;
+        }
+
+        .color-heading svg {
+            margin-left: 5px;
+            margin-top: 5px;
+            margin-right: 2px;
+        }
+
+        /******************************Custom Font*******************/
+        .font-container {}
+
+        .font-heading {
+            margin-top: 5px;
+        }
+
+        .font-heading svg {
+            margin-top: 5px;
+            margin-right: 1px;
+            margin-left: 7px;
+        }
+
+        .dropdown-font {
+            padding: 0;
+            color: #fff;
+            border-radius: 12px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .dropdown-font-header {
+            padding: 10px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #0c0c0c;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown-font-title {
+            margin: 0;
+        }
+
+        .dropdown-font-icon {
+            display: flex;
+        }
+
+        .dropdown-font-arrow {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .dropdown-font.open .dropdown-font-arrow {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-font-list {
+            background-color: #293060;
+            margin-top: 7px;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown-font-item {
+            padding: 10px;
+            font-size: 0.8rem;
+            transition: background 0.2s;
+        }
+
+        .dropdown-font-item:hover {
+            background: #191439;
+            border-radius: 7px;
+        }
+
+        /******************************Save button and Premium button*******************/
+
+        .save-btn-container {
+            margin-top: 40px;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            justify-content: space-around;
+            width: 251px;
+            margin: 0 auto;
+            margin-top: 0px;
+            margin-bottom: 10px;
+        }
+
+        input:focus {
+            outline: none;
+        }
+
+        .rightbar-form {
+            margin-top: 23px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .add-item {
+            text-align: center;
+            padding: 10px;
+            background-color: #181818;
+            border: 2px solid transparent;
+            border-radius: 15px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .add-item:hover {
+            background-color: #3747b294;
+        }
+
+        .add-item i {
+            margin-right: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar-item {
+                width: 100%;
+            }
+        }
+
+        /*-------------------------------toggle buttons-----------------------------*/
+        .toggle-container {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-evenly;
+
+            padding: 10px 20px;
+            color: black;
+            flex-direction: column;
+        }
+
+        .toggle-label {
+            color: white;
+            font-size: 16px;
+            /* Adjust the font size as needed */
+        }
+
+        /* The switch - the box around the slider */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            /* Width of the switch */
+            height: 34px;
+            /* Height of the switch */
+        }
+
+        /* Hide default HTML checkbox */
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        /* The slider */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            /* Slider background */
+            -webkit-transition: 0.4s;
+            transition: 0.4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            /* Height of the circle */
+            width: 26px;
+            /* Width of the circle */
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: 0.4s;
+            transition: 0.4s;
+        }
+
+        input:checked+.slider {
+            background-color: #3747b2;
+            /* Color when toggled on */
+        }
+
+        input:focus+.slider {
+            box-shadow: 0 0 1px #3747b2;
+            /* Shadow when focused */
+        }
+
+        input:checked+.slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+        /* ------------------text input--------------------------------- */
+        .textInput {
+            padding: 14px 12px !important;
+            background-color: #0c0c0c;
+            margin-top: 0px !important;
+            border-radius: 12px !important;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            border: none;
+        }
+
+        .textInputHeading {
+            margin-bottom: 2px !important;
+        }
+
+        /*------------------------------------------- sidebar button styling----------------------------------------------- */
+        .card {
+            background-color: #bd1414;
+            border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            color: white;
+            background-color: #0a0a0a;
+            text-align: center;
+            box-sizing: border-box;
+            position: relative;
+            border: 1px solid white;
+        }
+
+        .content-card p {
+            margin: 0;
+            padding: 0;
+            font-size: 12px;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .illustration {
+            margin: 20px 0;
+        }
+
+        .illustration img {
+            width: 100px;
+            height: auto;
+        }
+
+        .action-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .action-button button {
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .action-button button:focus {
+            outline: none;
+        }
+
+        .action-button {
+            position: relative;
+            margin-top: 20px;
+        }
+
+        .action-button {
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 24px;
+            cursor: pointer;
+            position: absolute;
+            bottom: -21px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .action-button button:focus {
+            outline: none;
+        }
+
+        #gradient-card {
+            position: absolute;
+            top: -150px;
+            left: -310px;
+            width: 310%;
+            opacity: 40%;
+        }
+
+        .inner-card {
+            overflow: hidden;
+            position: relative;
+            padding: 20px;
+            border-radius: 20px;
+        }
+
+        .sidebar-div {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="sidebar-div">
+            <div>
+
+
+                <button id="cross-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 15 15">
+                        <path fill="currentColor"
+                            d="M3.64 2.27L7.5 6.13l3.84-3.84A.92.92 0 0 1 12 2a1 1 0 0 1 1 1a.9.9 0 0 1-.27.66L8.84 7.5l3.89 3.89A.9.9 0 0 1 13 12a1 1 0 0 1-1 1a.92.92 0 0 1-.69-.27L7.5 8.87l-3.85 3.85A.92.92 0 0 1 3 13a1 1 0 0 1-1-1a.9.9 0 0 1 .27-.66L6.16 7.5L2.27 3.61A.9.9 0 0 1 2 3a1 1 0 0 1 1-1c.24.003.47.1.64.27" />
+                    </svg>
+                </button>
+                <div class="logo-container">
+                    <img id="logo-img" src="logo.png" alt="" />
+                    <p id="logo-heading">twiz</p>
+                </div>
+                <div class="gradient-background">
+                    <img id="gradient" src="Gradient.png" alt="" />
+                    <div class="profile-card">
+                        <img src="https://i.pinimg.com/originals/b8/4c/15/b84c1524359fe01b397af3ae210c4f36.gif"
+                            alt="Profile Picture" />
+                        <p class="card-heading">Jacob Jones</p>
+                        <button>Edit Profile</button>
+                    </div>
+                </div>
+                <div class="menubar">
+                    <div class="menu-item ">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+                            <path fill="white" d="M3 13h8V3H3zm0 8h8v-6H3zm10 0h8V11h-8zm0-18v6h8V3z" />
+                        </svg>
+                        <a href="Dashboard.html">Dashboard</a>
+                    </div>
+                    <div class="menu-item hover-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+                            <path fill="white"
+                                d="M2 6c0-1.505.78-3.08 2-4c0 .845.69 2 2 2a3 3 0 0 1 3 3c0 .386-.079.752-.212 1.091a74.515 74.515 0 0 1 2.191 1.808l-2.08 2.08a75.852 75.852 0 0 1-1.808-2.191A2.977 2.977 0 0 1 6 10c-2.21 0-4-1.79-4-4m12.152 6.848l1.341-1.341A4.446 4.446 0 0 0 17.5 12A4.5 4.5 0 0 0 22 7.5c0-.725-.188-1.401-.493-2.007L18 9l-2-2l3.507-3.507A4.446 4.446 0 0 0 17.5 3A4.5 4.5 0 0 0 13 7.5c0 .725.188 1.401.493 2.007L3 20l2 2l6.848-6.848a68.562 68.562 0 0 0 5.977 5.449l1.425 1.149l1.5-1.5l-1.149-1.425a68.562 68.562 0 0 0-5.449-5.977" />
+                        </svg>
+                        <a href="customize.html">Customize</a>
+                    </div>
+                    <div class="menu-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+                            <path fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M10 5a2 2 0 1 0 4 0a2 2 0 1 0-4 0M3 19a2 2 0 1 0 4 0a2 2 0 1 0-4 0m14 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0m-8-5a3 3 0 1 0 6 0a3 3 0 1 0-6 0m3-7v4m-5.3 6.8l2.8-2m7.8 2l-2.8-2" />
+                        </svg>
+                        <a href="social.html">Socials</a>
+                    </div>
+                    <div class="menu-item ">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+                            <path fill="white"
+                                d="M19.9 12.66a1 1 0 0 1 0-1.32l1.28-1.44a1 1 0 0 0 .12-1.17l-2-3.46a1 1 0 0 0-1.07-.48l-1.88.38a1 1 0 0 1-1.15-.66l-.61-1.83a1 1 0 0 0-.95-.68h-4a1 1 0 0 0-1 .68l-.56 1.83a1 1 0 0 1-1.15.66L5 4.79a1 1 0 0 0-1 .48L2 8.73a1 1 0 0 0 .1 1.17l1.27 1.44a1 1 0 0 1 0 1.32L2.1 14.1a1 1 0 0 0-.1 1.17l2 3.46a1 1 0 0 0 1.07.48l1.88-.38a1 1 0 0 1 1.15.66l.61 1.83a1 1 0 0 0 1 .68h4a1 1 0 0 0 .95-.68l.61-1.83a1 1 0 0 1 1.15-.66l1.88.38a1 1 0 0 0 1.07-.48l2-3.46a1 1 0 0 0-.12-1.17ZM18.41 14l.8.9l-1.28 2.22l-1.18-.24a3 3 0 0 0-3.45 2L12.92 20h-2.56L10 18.86a3 3 0 0 0-3.45-2l-1.18.24l-1.3-2.21l.8-.9a3 3 0 0 0 0-4l-.8-.9l1.28-2.2l1.18.24a3 3 0 0 0 3.45-2L10.36 4h2.56l.38 1.14a3 3 0 0 0 3.45 2l1.18-.24l1.28 2.22l-.8.9a3 3 0 0 0 0 3.98m-6.77-6a4 4 0 1 0 4 4a4 4 0 0 0-4-4m0 6a2 2 0 1 1 2-2a2 2 0 0 1-2 2" />
+                        </svg>
+                        <a href="setting.html">Settings</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-outer">
+
+                <div class="card">
+                    <div class="inner-card">
+                        <img id="gradient-card" src="Gradient.png" alt="" />
+                        <div class="content-card">
+                            <p>Use our Premium Features Now!</p>
+                            <div class="illustration">
+                                <img src="discordLogo.png" alt="Person with a cup">
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <button class="action-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                            <path fill="white"
+                                d="m19.164 12l-6.207-6.207l-1.414 1.414L16.336 12l-4.793 4.793l1.414 1.414zm-5.65 0L7.307 5.793L5.893 7.207L10.686 12l-4.793 4.793l1.414 1.414z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="top-bar">
+        <button id="hamburger-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                <path fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 17h18M3 12h18M3 7h18" />
+            </svg>
+        </button>
+        <div class="welcome">Welcome, Jacob</div>
+        <div class="top-btns">
+            <button id="upgrade">Upgrade</button>
+            <button id="not-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" style="
+                margin-top: 3px;
+            ">
+                    <g fill="none">
+                        <path
+                            d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" />
+                        <path fill="white"
+                            d="M15 19a2 2 0 0 1-1.85 1.995L13 21h-2a2 2 0 0 1-1.995-1.85L9 19zM12 2a7 7 0 0 1 6.996 6.76L19 9v3.764l1.822 3.644a1.1 1.1 0 0 1-.869 1.586l-.115.006H4.162a1.1 1.1 0 0 1-1.03-1.487l.046-.105L5 12.764V9a7 7 0 0 1 7-7" />
+                    </g>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <div class="content">
+
+        <div class="customize">
+            <div class="menu-container">
+                <div class="menu-items">
+                    <div class="menu-item-header " onclick="toggleMenu(this)">Profile<i class="fas fa-chevron-up"></i>
+                    </div>
+                    <div class="menu-item-content ">
+                        <div id="right-sidebar" class="right-sidebar">
+                            <form class="rightbar-form" action="#" method="post">
+                                <!-------------------Username----------------->
+                                <div class="sidebar-item">
+                                    <div class="icon-label-container textInputHeading discord-heading">
+                                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="18" height="23"
+                                            viewBox="0 0 30 30">
+                                            <path
+                                                d="M25.12,6.946c-2.424-1.948-6.257-2.278-6.419-2.292c-0.256-0.022-0.499,0.123-0.604,0.357 c-0.004,0.008-0.218,0.629-0.425,1.228c2.817,0.493,4.731,1.587,4.833,1.647c0.478,0.278,0.638,0.891,0.359,1.368 C22.679,9.572,22.344,9.75,22,9.75c-0.171,0-0.343-0.043-0.501-0.135C21.471,9.598,18.663,8,15.002,8 C11.34,8,8.531,9.599,8.503,9.615C8.026,9.892,7.414,9.729,7.137,9.251C6.86,8.775,7.021,8.164,7.497,7.886 c0.102-0.06,2.023-1.158,4.848-1.65c-0.218-0.606-0.438-1.217-0.442-1.225c-0.105-0.235-0.348-0.383-0.604-0.357 c-0.162,0.013-3.995,0.343-6.451,2.318C3.564,8.158,1,15.092,1,21.087c0,0.106,0.027,0.209,0.08,0.301 c1.771,3.11,6.599,3.924,7.699,3.959c0.007,0.001,0.013,0.001,0.019,0.001c0.194,0,0.377-0.093,0.492-0.25l1.19-1.612 c-2.61-0.629-3.99-1.618-4.073-1.679c-0.444-0.327-0.54-0.953-0.213-1.398c0.326-0.443,0.95-0.541,1.394-0.216 C7.625,20.217,10.172,22,15,22c4.847,0,7.387-1.79,7.412-1.808c0.444-0.322,1.07-0.225,1.395,0.221 c0.324,0.444,0.23,1.066-0.212,1.392c-0.083,0.061-1.456,1.048-4.06,1.677l1.175,1.615c0.115,0.158,0.298,0.25,0.492,0.25 c0.007,0,0.013,0,0.019-0.001c1.101-0.035,5.929-0.849,7.699-3.959c0.053-0.092,0.08-0.195,0.08-0.301 C29,15.092,26.436,8.158,25.12,6.946z M11,19c-1.105,0-2-1.119-2-2.5S9.895,14,11,14s2,1.119,2,2.5S12.105,19,11,19z M19,19 c-1.105,0-2-1.119-2-2.5s0.895-2.5,2-2.5s2,1.119,2,2.5S20.105,19,19,19z"
+                                                stroke="white" fill="white" />
+                                        </svg>
+
+                                        <label for=" discord-presence-select">
+                                            <p>Username</p>
+                                        </label>
+                                    </div>
+                                    <div id="dropdown" class="dropdown">
+                                        <input type="text" class="textInput" placeholder="Username" name="" />
+                                    </div>
+                                </div>
+                                <!-------------------Description----------------->
+                                <div class="sidebar-item">
+                                    <div class="icon-label-container textInputHeading discord-heading">
+                                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="18" height="23"
+                                            viewBox="0 0 30 30">
+                                            <path
+                                                d="M25.12,6.946c-2.424-1.948-6.257-2.278-6.419-2.292c-0.256-0.022-0.499,0.123-0.604,0.357 c-0.004,0.008-0.218,0.629-0.425,1.228c2.817,0.493,4.731,1.587,4.833,1.647c0.478,0.278,0.638,0.891,0.359,1.368 C22.679,9.572,22.344,9.75,22,9.75c-0.171,0-0.343-0.043-0.501-0.135C21.471,9.598,18.663,8,15.002,8 C11.34,8,8.531,9.599,8.503,9.615C8.026,9.892,7.414,9.729,7.137,9.251C6.86,8.775,7.021,8.164,7.497,7.886 c0.102-0.06,2.023-1.158,4.848-1.65c-0.218-0.606-0.438-1.217-0.442-1.225c-0.105-0.235-0.348-0.383-0.604-0.357 c-0.162,0.013-3.995,0.343-6.451,2.318C3.564,8.158,1,15.092,1,21.087c0,0.106,0.027,0.209,0.08,0.301 c1.771,3.11,6.599,3.924,7.699,3.959c0.007,0.001,0.013,0.001,0.019,0.001c0.194,0,0.377-0.093,0.492-0.25l1.19-1.612 c-2.61-0.629-3.99-1.618-4.073-1.679c-0.444-0.327-0.54-0.953-0.213-1.398c0.326-0.443,0.95-0.541,1.394-0.216 C7.625,20.217,10.172,22,15,22c4.847,0,7.387-1.79,7.412-1.808c0.444-0.322,1.07-0.225,1.395,0.221 c0.324,0.444,0.23,1.066-0.212,1.392c-0.083,0.061-1.456,1.048-4.06,1.677l1.175,1.615c0.115,0.158,0.298,0.25,0.492,0.25 c0.007,0,0.013,0,0.019-0.001c1.101-0.035,5.929-0.849,7.699-3.959c0.053-0.092,0.08-0.195,0.08-0.301 C29,15.092,26.436,8.158,25.12,6.946z M11,19c-1.105,0-2-1.119-2-2.5S9.895,14,11,14s2,1.119,2,2.5S12.105,19,11,19z M19,19 c-1.105,0-2-1.119-2-2.5s0.895-2.5,2-2.5s2,1.119,2,2.5S20.105,19,19,19z"
+                                                stroke="white" fill="white" />
+                                        </svg>
+
+                                        <label for=" discord-presence-select">
+                                            <p>Description</p>
+                                        </label>
+                                    </div>
+                                    <div id="dropdown" class="dropdown">
+                                        <input type="text" class="textInput" placeholder="Username" name="" />
+                                    </div>
+                                </div>
+                                <!-------------------Avatar----------------->
+                                <div class="sidebar-item">
+                                    <div class="icon-label-container">
+                                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24"
+                                            viewBox="0 0 128 128">
+                                            <path
+                                                d="M82.1 117.9c.4 0 .8-.1 1.2-.2 1.5-.6 2.3-2.4 1.6-3.9l-9.3-22.3h20.4c2 0 3.9-1.2 4.6-3.1.8-1.9.3-4-1.2-5.5L56.5 41.1c-1.4-1.4-3.6-1.8-5.4-1-1.9.8-3 2.6-3 4.6v60.2c0 2.1 1.2 3.9 3.2 4.7.6.2 1.2.4 1.8.4 1.4 0 2.7-.6 3.6-1.6l13.5-14.4 9.2 22.2C79.9 117.2 81 117.9 82.1 117.9zM40.6 22.7c.5 1.2 1.6 1.8 2.8 1.8.4 0 .8-.1 1.2-.2 1.5-.6 2.3-2.4 1.6-3.9L40.3 6.5c-.6-1.5-2.4-2.3-3.9-1.6-1.5.6-2.3 2.4-1.6 3.9L40.6 22.7zM16.7 32.4L31 36.9c.3.1.6.1.9.1 1.3 0 2.5-.8 2.9-2.1.5-1.6-.4-3.3-2-3.8l-14.3-4.5c-1.6-.5-3.3.4-3.8 2C14.2 30.2 15.1 31.9 16.7 32.4zM58.9 24.9c.4.2.9.3 1.4.3 1.1 0 2.1-.6 2.7-1.6l7-13.3c.8-1.5.2-3.3-1.3-4-1.5-.8-3.3-.2-4 1.3l-7 13.3C56.9 22.4 57.4 24.2 58.9 24.9z"
+                                                fill="#ffffff"></path>
+                                        </svg>
+                                        <label for="custom-cursor-file"> Avatar </label>
+                                    </div>
+                                    <span id="filename" class="file-name-display no-file">
+                                        <p>No file chosen</p>
+
+                                        <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M12 15L12 2M12 2L15 5.5M12 2L9 5.5" stroke="#777"
+                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                            </path>
+                                            <path
+                                                d="M8 22.0002H16C18.8284 22.0002 20.2426 22.0002 21.1213 21.1215C22 20.2429 22 18.8286 22 16.0002V15.0002C22 12.1718 22 10.7576 21.1213 9.8789C20.3529 9.11051 19.175 9.01406 17 9.00195M7 9.00195C4.82497 9.01406 3.64706 9.11051 2.87868 9.87889C2 10.7576 2 12.1718 2 15.0002L2 16.0002C2 18.8286 2 20.2429 2.87868 21.1215C3.17848 21.4213 3.54062 21.6188 4 21.749"
+                                                stroke="#777" stroke-width="1.5" stroke-linecap="round"></path>
+                                        </svg>
+                                    </span>
+                                    <input type="file" id="custom-cursor-file" class="custom-file-upload"
+                                        onchange="updateFileName()" name="">
+                                </div>
+                                <!-------------------Audio----------------->
+                                <div class="sidebar-item">
+                                    <div class="icon-label-container">
+                                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24"
+                                            viewBox="0 0 128 128">
+                                            <path
+                                                d="M82.1 117.9c.4 0 .8-.1 1.2-.2 1.5-.6 2.3-2.4 1.6-3.9l-9.3-22.3h20.4c2 0 3.9-1.2 4.6-3.1.8-1.9.3-4-1.2-5.5L56.5 41.1c-1.4-1.4-3.6-1.8-5.4-1-1.9.8-3 2.6-3 4.6v60.2c0 2.1 1.2 3.9 3.2 4.7.6.2 1.2.4 1.8.4 1.4 0 2.7-.6 3.6-1.6l13.5-14.4 9.2 22.2C79.9 117.2 81 117.9 82.1 117.9zM40.6 22.7c.5 1.2 1.6 1.8 2.8 1.8.4 0 .8-.1 1.2-.2 1.5-.6 2.3-2.4 1.6-3.9L40.3 6.5c-.6-1.5-2.4-2.3-3.9-1.6-1.5.6-2.3 2.4-1.6 3.9L40.6 22.7zM16.7 32.4L31 36.9c.3.1.6.1.9.1 1.3 0 2.5-.8 2.9-2.1.5-1.6-.4-3.3-2-3.8l-14.3-4.5c-1.6-.5-3.3.4-3.8 2C14.2 30.2 15.1 31.9 16.7 32.4zM58.9 24.9c.4.2.9.3 1.4.3 1.1 0 2.1-.6 2.7-1.6l7-13.3c.8-1.5.2-3.3-1.3-4-1.5-.8-3.3-.2-4 1.3l-7 13.3C56.9 22.4 57.4 24.2 58.9 24.9z"
+                                                fill="#ffffff"></path>
+                                        </svg>
+                                        <label for="custom-cursor-file"> Audio </label>
+                                    </div>
+                                    <span id="filename2" class="file-name-display no-file">
+                                        <p>No file chosen</p>
+
+
+                                        <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M12 15L12 2M12 2L15 5.5M12 2L9 5.5" stroke="#777"
+                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                            </path>
+                                            <path
+                                                d="M8 22.0002H16C18.8284 22.0002 20.2426 22.0002 21.1213 21.1215C22 20.2429 22 18.8286 22 16.0002V15.0002C22 12.1718 22 10.7576 21.1213 9.8789C20.3529 9.11051 19.175 9.01406 17 9.00195M7 9.00195C4.82497 9.01406 3.64706 9.11051 2.87868 9.87889C2 10.7576 2 12.1718 2 15.0002L2 16.0002C2 18.8286 2 20.2429 2.87868 21.1215C3.17848 21.4213 3.54062 21.6188 4 21.749"
+                                                stroke="#777" stroke-width="1.5" stroke-linecap="round"></path>
+                                        </svg>
+                                    </span>
+                                    <input type="file" id="custom-cursor-file2" class="custom-file-upload"
+                                        onchange="updateFileName2()" name="">
+                                </div>
+                                <!-------------------Custom Badges----------------->
+                                <div class="sidebar-item">
+                                    <div class="icon-label-container badge-heading">
+                                        <svg width="17px" height="17px" viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M14.5 7l.9 3.6 3.6.9-3.6.9-.9 3.6-.9-3.6-3.6-.9 3.6-.9zm-1.725 2.775L5.877 11.5l6.898 1.725 1.725 6.898 1.725-6.898 6.898-1.725-6.898-1.725L14.5 2.877zM6 4l-.5-4L5 4l-4 .5L5 5l.5 4L6 5l4-.5zm1 14l-.5-4-.5 4-4 .5 4 .5.5 4 .5-4 4-.5z"
+                                                stroke="white"></path>
+                                            <path fill="none" d="M0 0h24v24H0z"></path>
+                                        </svg>
+                                        <label for="background-badges-select">
+                                            <p>Badges</p>
+                                        </label>
+                                    </div>
+                                    <input name="" hidden="" id="badge-hidden-input">
+                                    <div id="dropdown-badge" class="dropdown-badge">
+                                        <div class="dropdown-badge-header">
+                                            <span id="discord-input-badge" class="dropdown-badge-title">None</span>
+                                            <div class="dropdown-badge-icon">
+                                                <svg class="dropdown-badge-arrow" width="20px" height="20px"
+                                                    viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                        d="M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z"
+                                                        fill="#777"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <div class="dropdown-badge-list" style="display: none;">
+                                            <div class="dropdown-badge-item">None</div>
+                                            <div class="dropdown-badge-item">Enable</div>
+                                            <div class="dropdown-badge-item">Disable</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-------------------Music Volume Slider----------------->
+                                <div class="sidebar-item">
+                                    <div class="icon-label-container profile-opacity-heading">
+                                        <svg fill="#ffff" width="22px" height="21px" viewBox="0 0 32 32" id="icon"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <defs>
+                                                <style>
+                                                    .cls-1 {
+                                                        fill: none;
+                                                    }
+                                                </style>
+                                            </defs>
+                                            <title>opacity</title>
+                                            <rect x="6" y="6" width="4" height="4"></rect>
+                                            <rect x="10" y="10" width="4" height="4"></rect>
+                                            <rect x="14" y="6" width="4" height="4"></rect>
+                                            <rect x="22" y="6" width="4" height="4"></rect>
+                                            <rect x="6" y="14" width="4" height="4"></rect>
+                                            <rect x="14" y="14" width="4" height="4"></rect>
+                                            <rect x="22" y="14" width="4" height="4"></rect>
+                                            <rect x="6" y="22" width="4" height="4"></rect>
+                                            <rect x="14" y="22" width="4" height="4"></rect>
+                                            <rect x="22" y="22" width="4" height="4"></rect>
+                                            <rect x="18" y="10" width="4" height="4"></rect>
+                                            <rect x="10" y="18" width="4" height="4"></rect>
+                                            <rect x="18" y="18" width="4" height="4"></rect>
+                                            <rect id="_Transparent_Rectangle_" data-name="<Transparent Rectangle>"
+                                                class="cls-1" width="32" height="32"></rect>
+                                        </svg>
+
+                                        <label class="slider-label" for="profile-opacity-range">Volume</label>
+                                    </div>
+
+                                    <div class="ranger-container">
+                                        <div class="rangeBox">
+                                            <div class="range-row">
+                                                <input class="range" id="range7" type="range" value="0" min="0"
+                                                    max="100" name="">
+                                            </div>
+                                            <div id="rangeVal7" class="result">0</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-------------------picture opacity slider----------------->
+                                <div class="sidebar-item">
+                                    <div class="icon-label-container profile-opacity-heading">
+                                        <svg fill="#ffff" width="22px" height="21px" viewBox="0 0 32 32" id="icon"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <defs>
+                                                <style>
+                                                    .cls-1 {
+                                                        fill: none;
+                                                    }
+                                                </style>
+                                            </defs>
+                                            <title>opacity</title>
+                                            <rect x="6" y="6" width="4" height="4"></rect>
+                                            <rect x="10" y="10" width="4" height="4"></rect>
+                                            <rect x="14" y="6" width="4" height="4"></rect>
+                                            <rect x="22" y="6" width="4" height="4"></rect>
+                                            <rect x="6" y="14" width="4" height="4"></rect>
+                                            <rect x="14" y="14" width="4" height="4"></rect>
+                                            <rect x="22" y="14" width="4" height="4"></rect>
+                                            <rect x="6" y="22" width="4" height="4"></rect>
+                                            <rect x="14" y="22" width="4" height="4"></rect>
+                                            <rect x="22" y="22" width="4" height="4"></rect>
+                                            <rect x="18" y="10" width="4" height="4"></rect>
+                                            <rect x="10" y="18" width="4" height="4"></rect>
+                                            <rect x="18" y="18" width="4" height="4"></rect>
+                                            <rect id="_Transparent_Rectangle_" data-name="<Transparent Rectangle>"
+                                                class="cls-1" width="32" height="32"></rect>
+                                        </svg>
+
+                                        <label class="slider-label" for="profile-opacity-range">Profile Opacity</label>
+                                    </div>
+
+                                    <div class="ranger-container">
+                                        <div class="rangeBox">
+                                            <div class="range-row">
+                                                <input class="range" id="range2" type="range" value="0" min="0"
+                                                    max="100" name="">
+                                            </div>
+                                            <div id="rangeVal2" class="result">0</div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!----------------------profile blue slider-------------->
+                                <div class="sidebar-item">
+                                    <div class="icon-label-container profile-opacity-heading">
+                                        <svg fill="#ffff" width="22px" height="21px" viewBox="0 0 32 32" id="icon"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <defs>
+                                                <style>
+                                                    .cls-1 {
+                                                        fill: none;
+                                                    }
+                                                </style>
+                                            </defs>
+                                            <title>opacity</title>
+                                            <rect x="6" y="6" width="4" height="4"></rect>
+                                            <rect x="10" y="10" width="4" height="4"></rect>
+                                            <rect x="14" y="6" width="4" height="4"></rect>
+                                            <rect x="22" y="6" width="4" height="4"></rect>
+                                            <rect x="6" y="14" width="4" height="4"></rect>
+                                            <rect x="14" y="14" width="4" height="4"></rect>
+                                            <rect x="22" y="14" width="4" height="4"></rect>
+                                            <rect x="6" y="22" width="4" height="4"></rect>
+                                            <rect x="14" y="22" width="4" height="4"></rect>
+                                            <rect x="22" y="22" width="4" height="4"></rect>
+                                            <rect x="18" y="10" width="4" height="4"></rect>
+                                            <rect x="10" y="18" width="4" height="4"></rect>
+                                            <rect x="18" y="18" width="4" height="4"></rect>
+                                            <rect id="_Transparent_Rectangle_" data-name="<Transparent Rectangle>"
+                                                class="cls-1" width="32" height="32"></rect>
+                                        </svg>
+
+                                        <label class="slider-label" for="profile-opacity-range">Profile Blur</label>
+                                    </div>
+
+                                    <div class="ranger-container">
+                                        <div class="rangeBox">
+                                            <div class="range-row">
+                                                <input class="range" id="range3" type="range" value="0" min="0"
+                                                    max="100" name="">
+                                            </div>
+                                            <div id="rangeVal3" class="result">0</div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-items">
+                    <div class="menu-item-header" onclick="toggleMenu(this)">Effects<i class="fas fa-chevron-up"></i>
+                    </div>
+                    <div class="menu-item-content">
+                        <div id="right-sidebar" class="right-sidebar">
+                            <form class="rightbar-form" action="#" method="post">
+                                <!-------------------custom Background Effects----------------->
+
+                                <div class="sidebar-item">
+                                    <div class="icon-label-container effect-heading">
+                                        <svg width="17px" height="17px" viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M14.5 7l.9 3.6 3.6.9-3.6.9-.9 3.6-.9-3.6-3.6-.9 3.6-.9zm-1.725 2.775L5.877 11.5l6.898 1.725 1.725 6.898 1.725-6.898 6.898-1.725-6.898-1.725L14.5 2.877zM6 4l-.5-4L5 4l-4 .5L5 5l.5 4L6 5l4-.5zm1 14l-.5-4-.5 4-4 .5 4 .5.5 4 .5-4 4-.5z"
+                                                stroke="white"></path>
+                                            <path fill="none" d="M0 0h24v24H0z"></path>
+                                        </svg>
+
+                                        <label for="background-effects-select">
+                                            <p>Background Effects</p>
+                                        </label>
+                                    </div>
+                                    <input name="" hidden="" id="effect-hidden-input">
+                                    <div id="dropdown-effect" class="dropdown-effect">
+                                        <div class="dropdown-effect-header">
+                                            <span id="discord-input-effect" class="dropdown-effect-title">None</span>
+                                            <div class="dropdown-effect-icon">
+                                                <svg class="dropdown-effect-arrow" width="20px" height="20px"
+                                                    viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                        d="M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z"
+                                                        fill="#777"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <div class="dropdown-effect-list" style="display: none;">
+                                            <div class="dropdown-effect-item">None</div>
+                                            <div class="dropdown-effect-item">Snowflakes</div>
+                                            <div class="dropdown-effect-item">
+                                                Bats (COMING SOON)
+                                            </div>
+                                            <div class="dropdown-effect-item">TV (COMING SOON)</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-------------------custom username Effects----------------->
+
+                                <div class="sidebar-item">
+                                    <div class="icon-label-container effect-heading">
+                                        <svg width="17px" height="17px" viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M14.5 7l.9 3.6 3.6.9-3.6.9-.9 3.6-.9-3.6-3.6-.9 3.6-.9zm-1.725 2.775L5.877 11.5l6.898 1.725 1.725 6.898 1.725-6.898 6.898-1.725-6.898-1.725L14.5 2.877zM6 4l-.5-4L5 4l-4 .5L5 5l.5 4L6 5l4-.5zm1 14l-.5-4-.5 4-4 .5 4 .5.5 4 .5-4 4-.5z"
+                                                stroke="white"></path>
+                                            <path fill="none" d="M0 0h24v24H0z"></path>
+                                        </svg>
+
+                                        <label for="background-effects-select">
+                                            <p>Username Effects</p>
+                                        </label>
+                                    </div>
+                                    <input name="" hidden="" id="effect-hidden-input2">
+                                    <div id="dropdown-effect2" class="dropdown-effect">
+                                        <div class="dropdown-effect-header">
+                                            <span id="discord-input-effect2" class="dropdown-effect-title">None</span>
+                                            <div class="dropdown-effect-icon">
+                                                <svg class="dropdown-effect-arrow" width="20px" height="20px"
+                                                    viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                        d="M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z"
+                                                        fill="#777"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <div class="dropdown-effect-list" style="display: none;">
+                                            <div class="dropdown-effect-item">None</div>
+                                            <div class="dropdown-effect-item">Snowflakes</div>
+                                            <div class="dropdown-effect-item">Bats (COMING SOON)</div>
+                                            <div class="dropdown-effect-item">TV (COMING SOON)</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-------------------Glow Effects----------------->
+
+                                <div class="sidebar-item">
+                                    <div class="icon-label-container effect-heading">
+                                        <svg width="17px" height="17px" viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M14.5 7l.9 3.6 3.6.9-3.6.9-.9 3.6-.9-3.6-3.6-.9 3.6-.9zm-1.725 2.775L5.877 11.5l6.898 1.725 1.725 6.898 1.725-6.898 6.898-1.725-6.898-1.725L14.5 2.877zM6 4l-.5-4L5 4l-4 .5L5 5l.5 4L6 5l4-.5zm1 14l-.5-4-.5 4-4 .5 4 .5.5 4 .5-4 4-.5z"
+                                                stroke="white"></path>
+                                            <path fill="none" d="M0 0h24v24H0z"></path>
+                                        </svg>
+
+                                        <label for="background-effects-select">
+                                            <p>Glow Effects</p>
+                                        </label>
+                                    </div>
+                                    <input name="" hidden="" id="effect-hidden-input3">
+                                    <div id="dropdown-effect3" class="dropdown-effect">
+                                        <div class="dropdown-effect-header">
+                                            <span id="discord-input-effect3" class="dropdown-effect-title">None</span>
+                                            <div class="dropdown-effect-icon">
+                                                <svg class="dropdown-effect-arrow" width="20px" height="20px"
+                                                    viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                        d="M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z"
+                                                        fill="#777"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <div class="dropdown-effect-list" style="display: none;">
+                                            <div class="dropdown-effect-item">None</div>
+                                            <div class="dropdown-effect-item">Snowflakes</div>
+                                            <div class="dropdown-effect-item">Bats (COMING SOON)</div>
+                                            <div class="dropdown-effect-item">TV (COMING SOON)</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-items">
+                    <div class="menu-item-header" onclick="toggleMenu(this)">Color<i class="fas fa-chevron-up"></i>
+                    </div>
+                    <div class="menu-item-content">
+                        <div id="right-sidebar" class="right-sidebar">
+                            <form class="rightbar-form" action="#" method="post">
+                                <!-------------------Background Color----------------->
+                                <div class="sidebar-item">
+                                    <div class="icon-label-container color-heading">
+                                        <svg width="17px" height="17px" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M14 12.5001C14 13.3285 13.3284 14.0001 12.5 14.0001C11.6716 14.0001 11 13.3285 11 12.5001C11 11.6717 11.6716 11.0001 12.5 11.0001C13.3284 11.0001 14 11.6717 14 12.5001Z"
+                                                fill="#ffff"></path>
+                                            <path
+                                                d="M16.5 10.0001C17.3284 10.0001 18 9.32854 18 8.50011C18 7.67169 17.3284 7.00011 16.5 7.00011C15.6716 7.00011 15 7.67169 15 8.50011C15 9.32854 15.6716 10.0001 16.5 10.0001Z"
+                                                fill="#ffff"></path>
+                                            <path
+                                                d="M13 6.50011C13 7.32854 12.3284 8.00011 11.5 8.00011C10.6716 8.00011 10 7.32854 10 6.50011C10 5.67169 10.6716 5.00011 11.5 5.00011C12.3284 5.00011 13 5.67169 13 6.50011Z"
+                                                fill="#ffff"></path>
+                                            <path
+                                                d="M7.50001 12.0001C8.32844 12.0001 9.00001 11.3285 9.00001 10.5001C9.00001 9.67169 8.32844 9.00011 7.50001 9.00011C6.67158 9.00011 6.00001 9.67169 6.00001 10.5001C6.00001 11.3285 6.67158 12.0001 7.50001 12.0001Z"
+                                                fill="#ffff"></path>
+                                            <path
+                                                d="M14 17.5001C14 18.3285 13.3284 19.0001 12.5 19.0001C11.6716 19.0001 11 18.3285 11 17.5001C11 16.6717 11.6716 16.0001 12.5 16.0001C13.3284 16.0001 14 16.6717 14 17.5001Z"
+                                                fill="#ffff"></path>
+                                            <path
+                                                d="M7.50001 17.0001C8.32844 17.0001 9.00001 16.3285 9.00001 15.5001C9.00001 14.6717 8.32844 14.0001 7.50001 14.0001C6.67158 14.0001 6.00001 14.6717 6.00001 15.5001C6.00001 16.3285 6.67158 17.0001 7.50001 17.0001Z"
+                                                fill="#ffff"></path>
+                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                d="M11.5017 1.02215C15.4049 0.791746 19.5636 2.32444 21.8087 5.41131C22.5084 6.37324 22.8228 7.63628 22.6489 8.83154C22.471 10.054 21.7734 11.2315 20.4472 11.8945C19.6389 12.2987 18.7731 12.9466 18.2401 13.668C17.7158 14.3778 17.6139 14.9917 17.8944 15.5529C18.4231 16.6102 18.8894 17.9257 18.8106 19.1875C18.7699 19.8375 18.5828 20.4946 18.1664 21.0799C17.7488 21.6667 17.1448 22.1192 16.3714 22.4286C14.6095 23.1333 12.6279 23.1643 10.8081 22.8207C8.98579 22.4765 7.24486 21.7421 5.92656 20.8194C4.00568 19.4748 2.47455 17.6889 1.71371 15.4464C0.9504 13.1965 0.995912 10.5851 2.06024 7.65803C3.64355 3.30372 7.56248 1.25469 11.5017 1.02215ZM11.6196 3.01868C8.26589 3.21665 5.18483 4.9176 3.93984 8.34149C3.00414 10.9148 3.01388 13.0536 3.60768 14.8038C4.20395 16.5613 5.42282 18.0255 7.07347 19.1809C8.14405 19.9303 9.6169 20.5604 11.1792 20.8554C12.7442 21.151 14.3181 21.0959 15.6286 20.5716C16.308 20.2999 16.7678 19.8099 16.8145 19.0627C16.8606 18.3245 16.5769 17.3901 16.1056 16.4473C15.3639 14.9639 15.8542 13.5318 16.6315 12.4796C17.4002 11.4391 18.5455 10.6093 19.5528 10.1057C20.2266 9.76878 20.5747 9.19623 20.6697 8.54355C20.7686 7.86365 20.5831 7.12638 20.1913 6.58769C18.4364 4.17486 15.0093 2.81858 11.6196 3.01868Z"
+                                                fill="#ffff"></path>
+                                        </svg>
+                                        <label for="background-color-select">
+                                            <p>Background</p>
+                                        </label>
+                                    </div>
+                                    <div class="color-input-container">
+                                        <div class="picker-span">
+                                            <input type="color" id="color-picker" class="color-input" value="#ffffff"
+                                                name="">
+                                            <span id="result">#a817a6</span>
+                                        </div>
+
+                                        <i class="fas fa-eye-dropper color-dropper-icon" onclick="openEyeDropper()"></i>
+                                    </div>
+                                </div>
+                                <!-------------------Accent----------------->
+                                <div class="sidebar-item">
+                                    <div class="icon-label-container color-heading">
+                                        <svg width="17px" height="17px" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M14 12.5001C14 13.3285 13.3284 14.0001 12.5 14.0001C11.6716 14.0001 11 13.3285 11 12.5001C11 11.6717 11.6716 11.0001 12.5 11.0001C13.3284 11.0001 14 11.6717 14 12.5001Z"
+                                                fill="#ffff"></path>
+                                            <path
+                                                d="M16.5 10.0001C17.3284 10.0001 18 9.32854 18 8.50011C18 7.67169 17.3284 7.00011 16.5 7.00011C15.6716 7.00011 15 7.67169 15 8.50011C15 9.32854 15.6716 10.0001 16.5 10.0001Z"
+                                                fill="#ffff"></path>
+                                            <path
+                                                d="M13 6.50011C13 7.32854 12.3284 8.00011 11.5 8.00011C10.6716 8.00011 10 7.32854 10 6.50011C10 5.67169 10.6716 5.00011 11.5 5.00011C12.3284 5.00011 13 5.67169 13 6.50011Z"
+                                                fill="#ffff"></path>
+                                            <path
+                                                d="M7.50001 12.0001C8.32844 12.0001 9.00001 11.3285 9.00001 10.5001C9.00001 9.67169 8.32844 9.00011 7.50001 9.00011C6.67158 9.00011 6.00001 9.67169 6.00001 10.5001C6.00001 11.3285 6.67158 12.0001 7.50001 12.0001Z"
+                                                fill="#ffff"></path>
+                                            <path
+                                                d="M14 17.5001C14 18.3285 13.3284 19.0001 12.5 19.0001C11.6716 19.0001 11 18.3285 11 17.5001C11 16.6717 11.6716 16.0001 12.5 16.0001C13.3284 16.0001 14 16.6717 14 17.5001Z"
+                                                fill="#ffff"></path>
+                                            <path
+                                                d="M7.50001 17.0001C8.32844 17.0001 9.00001 16.3285 9.00001 15.5001C9.00001 14.6717 8.32844 14.0001 7.50001 14.0001C6.67158 14.0001 6.00001 14.6717 6.00001 15.5001C6.00001 16.3285 6.67158 17.0001 7.50001 17.0001Z"
+                                                fill="#ffff"></path>
+                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                d="M11.5017 1.02215C15.4049 0.791746 19.5636 2.32444 21.8087 5.41131C22.5084 6.37324 22.8228 7.63628 22.6489 8.83154C22.471 10.054 21.7734 11.2315 20.4472 11.8945C19.6389 12.2987 18.7731 12.9466 18.2401 13.668C17.7158 14.3778 17.6139 14.9917 17.8944 15.5529C18.4231 16.6102 18.8894 17.9257 18.8106 19.1875C18.7699 19.8375 18.5828 20.4946 18.1664 21.0799C17.7488 21.6667 17.1448 22.1192 16.3714 22.4286C14.6095 23.1333 12.6279 23.1643 10.8081 22.8207C8.98579 22.4765 7.24486 21.7421 5.92656 20.8194C4.00568 19.4748 2.47455 17.6889 1.71371 15.4464C0.9504 13.1965 0.995912 10.5851 2.06024 7.65803C3.64355 3.30372 7.56248 1.25469 11.5017 1.02215ZM11.6196 3.01868C8.26589 3.21665 5.18483 4.9176 3.93984 8.34149C3.00414 10.9148 3.01388 13.0536 3.60768 14.8038C4.20395 16.5613 5.42282 18.0255 7.07347 19.1809C8.14405 19.9303 9.6169 20.5604 11.1792 20.8554C12.7442 21.151 14.3181 21.0959 15.6286 20.5716C16.308 20.2999 16.7678 19.8099 16.8145 19.0627C16.8606 18.3245 16.5769 17.3901 16.1056 16.4473C15.3639 14.9639 15.8542 13.5318 16.6315 12.4796C17.4002 11.4391 18.5455 10.6093 19.5528 10.1057C20.2266 9.76878 20.5747 9.19623 20.6697 8.54355C20.7686 7.86365 20.5831 7.12638 20.1913 6.58769C18.4364 4.17486 15.0093 2.81858 11.6196 3.01868Z"
+                                                fill="#ffff"></path>
+                                        </svg>
+                                        <label for="background-color-select">
+                                            <p>Text</p>
+                                        </label>
+                                    </div>
+                                    <div class="color-input-container">
+                                        <div class="picker-span">
+                                            <input type="color" id="color-picker2" class="color-input" value="#ffffff"
+                                                name="">
+                                            <span id="result2">#ffffff</span>
+                                        </div>
+
+
+                                        <i class="fas fa-eye-dropper color-dropper-icon"
+                                            onclick="openEyeDropper2()"></i>
+                                    </div>
+                                </div>
+                                <!-------------------Text----------------->
+                                <div class="sidebar-item">
+                                    <div class="icon-label-container color-heading">
+                                        <svg width="17px" height="17px" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M14 12.5001C14 13.3285 13.3284 14.0001 12.5 14.0001C11.6716 14.0001 11 13.3285 11 12.5001C11 11.6717 11.6716 11.0001 12.5 11.0001C13.3284 11.0001 14 11.6717 14 12.5001Z"
+                                                fill="#ffff"></path>
+                                            <path
+                                                d="M16.5 10.0001C17.3284 10.0001 18 9.32854 18 8.50011C18 7.67169 17.3284 7.00011 16.5 7.00011C15.6716 7.00011 15 7.67169 15 8.50011C15 9.32854 15.6716 10.0001 16.5 10.0001Z"
+                                                fill="#ffff"></path>
+                                            <path
+                                                d="M13 6.50011C13 7.32854 12.3284 8.00011 11.5 8.00011C10.6716 8.00011 10 7.32854 10 6.50011C10 5.67169 10.6716 5.00011 11.5 5.00011C12.3284 5.00011 13 5.67169 13 6.50011Z"
+                                                fill="#ffff"></path>
+                                            <path
+                                                d="M7.50001 12.0001C8.32844 12.0001 9.00001 11.3285 9.00001 10.5001C9.00001 9.67169 8.32844 9.00011 7.50001 9.00011C6.67158 9.00011 6.00001 9.67169 6.00001 10.5001C6.00001 11.3285 6.67158 12.0001 7.50001 12.0001Z"
+                                                fill="#ffff"></path>
+                                            <path
+                                                d="M14 17.5001C14 18.3285 13.3284 19.0001 12.5 19.0001C11.6716 19.0001 11 18.3285 11 17.5001C11 16.6717 11.6716 16.0001 12.5 16.0001C13.3284 16.0001 14 16.6717 14 17.5001Z"
+                                                fill="#ffff"></path>
+                                            <path
+                                                d="M7.50001 17.0001C8.32844 17.0001 9.00001 16.3285 9.00001 15.5001C9.00001 14.6717 8.32844 14.0001 7.50001 14.0001C6.67158 14.0001 6.00001 14.6717 6.00001 15.5001C6.00001 16.3285 6.67158 17.0001 7.50001 17.0001Z"
+                                                fill="#ffff"></path>
+                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                d="M11.5017 1.02215C15.4049 0.791746 19.5636 2.32444 21.8087 5.41131C22.5084 6.37324 22.8228 7.63628 22.6489 8.83154C22.471 10.054 21.7734 11.2315 20.4472 11.8945C19.6389 12.2987 18.7731 12.9466 18.2401 13.668C17.7158 14.3778 17.6139 14.9917 17.8944 15.5529C18.4231 16.6102 18.8894 17.9257 18.8106 19.1875C18.7699 19.8375 18.5828 20.4946 18.1664 21.0799C17.7488 21.6667 17.1448 22.1192 16.3714 22.4286C14.6095 23.1333 12.6279 23.1643 10.8081 22.8207C8.98579 22.4765 7.24486 21.7421 5.92656 20.8194C4.00568 19.4748 2.47455 17.6889 1.71371 15.4464C0.9504 13.1965 0.995912 10.5851 2.06024 7.65803C3.64355 3.30372 7.56248 1.25469 11.5017 1.02215ZM11.6196 3.01868C8.26589 3.21665 5.18483 4.9176 3.93984 8.34149C3.00414 10.9148 3.01388 13.0536 3.60768 14.8038C4.20395 16.5613 5.42282 18.0255 7.07347 19.1809C8.14405 19.9303 9.6169 20.5604 11.1792 20.8554C12.7442 21.151 14.3181 21.0959 15.6286 20.5716C16.308 20.2999 16.7678 19.8099 16.8145 19.0627C16.8606 18.3245 16.5769 17.3901 16.1056 16.4473C15.3639 14.9639 15.8542 13.5318 16.6315 12.4796C17.4002 11.4391 18.5455 10.6093 19.5528 10.1057C20.2266 9.76878 20.5747 9.19623 20.6697 8.54355C20.7686 7.86365 20.5831 7.12638 20.1913 6.58769C18.4364 4.17486 15.0093 2.81858 11.6196 3.01868Z"
+                                                fill="#ffff"></path>
+                                        </svg>
+                                        <label for="background-color-select">
+                                            <p>Accent</p>
+                                        </label>
+                                    </div>
+                                    <div class="color-input-container">
+                                        <div class="picker-span">
+                                            <input type="color" id="color-picker3" class="color-input" value="#ffffff"
+                                                name="">
+                                            <span id="result3">#ffffff</span>
+                                        </div>
+
+
+                                        <i class="fas fa-eye-dropper color-dropper-icon"
+                                            onclick="openEyeDropper3()"></i>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-items">
+                    <div class="menu-item-header" onclick="toggleMenu(this)">Module<i class="fas fa-chevron-up"></i>
+                    </div>
+                    <div class="menu-item-content">
+                        <div id="right-sidebar" class="right-sidebar">
+                            <form class="rightbar-form" action="#" method="post">
+                                <!-------------------custom dicord dropdown----------------->
+
+                                <div class="sidebar-item">
+                                    <div class="icon-label-container discord-heading">
+                                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="18" height="23"
+                                            viewBox="0 0 30 30">
+                                            <path
+                                                d="M25.12,6.946c-2.424-1.948-6.257-2.278-6.419-2.292c-0.256-0.022-0.499,0.123-0.604,0.357 c-0.004,0.008-0.218,0.629-0.425,1.228c2.817,0.493,4.731,1.587,4.833,1.647c0.478,0.278,0.638,0.891,0.359,1.368 C22.679,9.572,22.344,9.75,22,9.75c-0.171,0-0.343-0.043-0.501-0.135C21.471,9.598,18.663,8,15.002,8 C11.34,8,8.531,9.599,8.503,9.615C8.026,9.892,7.414,9.729,7.137,9.251C6.86,8.775,7.021,8.164,7.497,7.886 c0.102-0.06,2.023-1.158,4.848-1.65c-0.218-0.606-0.438-1.217-0.442-1.225c-0.105-0.235-0.348-0.383-0.604-0.357 c-0.162,0.013-3.995,0.343-6.451,2.318C3.564,8.158,1,15.092,1,21.087c0,0.106,0.027,0.209,0.08,0.301 c1.771,3.11,6.599,3.924,7.699,3.959c0.007,0.001,0.013,0.001,0.019,0.001c0.194,0,0.377-0.093,0.492-0.25l1.19-1.612 c-2.61-0.629-3.99-1.618-4.073-1.679c-0.444-0.327-0.54-0.953-0.213-1.398c0.326-0.443,0.95-0.541,1.394-0.216 C7.625,20.217,10.172,22,15,22c4.847,0,7.387-1.79,7.412-1.808c0.444-0.322,1.07-0.225,1.395,0.221 c0.324,0.444,0.23,1.066-0.212,1.392c-0.083,0.061-1.456,1.048-4.06,1.677l1.175,1.615c0.115,0.158,0.298,0.25,0.492,0.25 c0.007,0,0.013,0,0.019-0.001c1.101-0.035,5.929-0.849,7.699-3.959c0.053-0.092,0.08-0.195,0.08-0.301 C29,15.092,26.436,8.158,25.12,6.946z M11,19c-1.105,0-2-1.119-2-2.5S9.895,14,11,14s2,1.119,2,2.5S12.105,19,11,19z M19,19 c-1.105,0-2-1.119-2-2.5s0.895-2.5,2-2.5s2,1.119,2,2.5S20.105,19,19,19z"
+                                                stroke="white" fill="white"></path>
+                                        </svg>
+
+                                        <label for=" discord-presence-select">
+                                            <p>Discord Presence</p>
+                                        </label>
+                                    </div>
+                                    <input hidden id="effect-hidden-input4">
+                                    <div id="dropdown-effect4" class="dropdown-effect">
+                                        <div class="dropdown-effect-header">
+                                            <span id="discord-input-effect4" class="dropdown-effect-title">None</span>
+                                            <div class="dropdown-icon">
+                                                <svg class="dropdown-arrow" width="20px" height="20px"
+                                                    viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                        d="M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z"
+                                                        fill="#777"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <div class="dropdown-effect-list" style="display: none;">
+                                            <div class="dropdown-effect-item">None</div>
+                                            <div class="dropdown-effect-item">Snowflakes</div>
+                                            <div class="dropdown-effect-item">Bats (COMING SOON)</div>
+                                            <div class="dropdown-effect-item">TV (COMING SOON)</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-------------------custom server dropdown----------------->
+
+                                <div class="sidebar-item">
+                                    <div class="icon-label-container discord-heading">
+                                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="18" height="23"
+                                            viewBox="0 0 30 30">
+                                            <path
+                                                d="M25.12,6.946c-2.424-1.948-6.257-2.278-6.419-2.292c-0.256-0.022-0.499,0.123-0.604,0.357 c-0.004,0.008-0.218,0.629-0.425,1.228c2.817,0.493,4.731,1.587,4.833,1.647c0.478,0.278,0.638,0.891,0.359,1.368 C22.679,9.572,22.344,9.75,22,9.75c-0.171,0-0.343-0.043-0.501-0.135C21.471,9.598,18.663,8,15.002,8 C11.34,8,8.531,9.599,8.503,9.615C8.026,9.892,7.414,9.729,7.137,9.251C6.86,8.775,7.021,8.164,7.497,7.886 c0.102-0.06,2.023-1.158,4.848-1.65c-0.218-0.606-0.438-1.217-0.442-1.225c-0.105-0.235-0.348-0.383-0.604-0.357 c-0.162,0.013-3.995,0.343-6.451,2.318C3.564,8.158,1,15.092,1,21.087c0,0.106,0.027,0.209,0.08,0.301 c1.771,3.11,6.599,3.924,7.699,3.959c0.007,0.001,0.013,0.001,0.019,0.001c0.194,0,0.377-0.093,0.492-0.25l1.19-1.612 c-2.61-0.629-3.99-1.618-4.073-1.679c-0.444-0.327-0.54-0.953-0.213-1.398c0.326-0.443,0.95-0.541,1.394-0.216 C7.625,20.217,10.172,22,15,22c4.847,0,7.387-1.79,7.412-1.808c0.444-0.322,1.07-0.225,1.395,0.221 c0.324,0.444,0.23,1.066-0.212,1.392c-0.083,0.061-1.456,1.048-4.06,1.677l1.175,1.615c0.115,0.158,0.298,0.25,0.492,0.25 c0.007,0,0.013,0,0.019-0.001c1.101-0.035,5.929-0.849,7.699-3.959c0.053-0.092,0.08-0.195,0.08-0.301 C29,15.092,26.436,8.158,25.12,6.946z M11,19c-1.105,0-2-1.119-2-2.5S9.895,14,11,14s2,1.119,2,2.5S12.105,19,11,19z M19,19 c-1.105,0-2-1.119-2-2.5s0.895-2.5,2-2.5s2,1.119,2,2.5S20.105,19,19,19z"
+                                                stroke="white" fill="white"></path>
+                                        </svg>
+
+                                        <label for=" discord-presence-select">
+                                            <p>Server Presence</p>
+                                        </label>
+                                    </div>
+                                    <input hidden id="effect-hidden-input5">
+                                    <div id="dropdown-effect5" class="dropdown-effect">
+                                        <div class="dropdown-effect-header">
+                                            <span id="discord-input-effect5" class="dropdown-effect-title">None</span>
+                                            <div class="dropdown-icon">
+                                                <svg class="dropdown-arrow" width="20px" height="20px"
+                                                    viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                        d="M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z"
+                                                        fill="#777"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <div class="dropdown-effect-list" style="display: none;">
+                                            <div class="dropdown-effect-item">None</div>
+                                            <div class="dropdown-effect-item">Snowflakes</div>
+                                            <div class="dropdown-effect-item">Bats (COMING SOON)</div>
+                                            <div class="dropdown-effect-item">TV (COMING SOON)</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-items">
+                    <div class="menu-item-header" onclick="toggleMenu(this)">Premium<i class="fas fa-chevron-up"></i>
+                    </div>
+                    <div class="menu-item-content">
+                        <div id="right-sidebar" class="right-sidebar">
+                            <form class="rightbar-form" action="#" method="post">
+                                <!-------------------Custom font----------------->
+                                <div class="sidebar-item font-container">
+                                    <div class="icon-label-container font-heading">
+                                        <svg width="17px" height="17px" viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M14.5 7l.9 3.6 3.6.9-3.6.9-.9 3.6-.9-3.6-3.6-.9 3.6-.9zm-1.725 2.775L5.877 11.5l6.898 1.725 1.725 6.898 1.725-6.898 6.898-1.725-6.898-1.725L14.5 2.877zM6 4l-.5-4L5 4l-4 .5L5 5l.5 4L6 5l4-.5zm1 14l-.5-4-.5 4-4 .5 4 .5.5 4 .5-4 4-.5z"
+                                                stroke="white"></path>
+                                            <path fill="none" d="M0 0h24v24H0z"></path>
+                                        </svg>
+                                        <label for="background-fonts-select">
+                                            <p>Custom Fonts</p>
+                                        </label>
+                                    </div>
+                                    <input name="" hidden="" id="font-hidden-input">
+                                    <div id="dropdown-font" class="dropdown-font">
+                                        <div class="dropdown-font-header">
+                                            <span id="discord-input-font" class="dropdown-font-title">None</span>
+                                            <div class="dropdown-font-icon">
+                                                <svg class="dropdown-font-arrow" width="20px" height="20px"
+                                                    viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                        d="M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z"
+                                                        fill="#777"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <div class="dropdown-font-list" style="display: none;">
+                                            <div class="dropdown-font-item">None</div>
+                                            <div class="dropdown-font-item">Satoshi</div>
+                                            <div class="dropdown-font-item">Hacker</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-------------------Typewriter Effect----------------->
+                                <div class="sidebar-item font-container">
+                                    <div class="icon-label-container font-heading">
+                                        <svg width="17px" height="17px" viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M14.5 7l.9 3.6 3.6.9-3.6.9-.9 3.6-.9-3.6-3.6-.9 3.6-.9zm-1.725 2.775L5.877 11.5l6.898 1.725 1.725 6.898 1.725-6.898 6.898-1.725-6.898-1.725L14.5 2.877zM6 4l-.5-4L5 4l-4 .5L5 5l.5 4L6 5l4-.5zm1 14l-.5-4-.5 4-4 .5 4 .5.5 4 .5-4 4-.5z"
+                                                stroke="white"></path>
+                                            <path fill="none" d="M0 0h24v24H0z"></path>
+                                        </svg>
+                                        <label for="background-fonts-select">
+                                            <p>Cursor Effects</p>
+                                        </label>
+                                    </div>
+                                    <input hidden id="effect-hidden-input6">
+                                    <div id="dropdown-effect6" class="dropdown-effect">
+                                        <div class="dropdown-effect-header">
+                                            <span id="discord-input-effect6" class="dropdown-effect-title">None</span>
+                                            <div class="dropdown-font-icon">
+                                                <svg class="dropdown-font-arrow" width="20px" height="20px"
+                                                    viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                        d="M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z"
+                                                        fill="#777"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <div class="dropdown-effect-list" style="display: none;">
+                                            <div class="dropdown-effect-item">None</div>
+                                            <div class="dropdown-effect-item">Snowflakes</div>
+                                            <div class="dropdown-effect-item">Bats (COMING SOON)</div>
+                                            <div class="dropdown-effect-item">TV (COMING SOON)</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-------------------the custom cuser----------------->
+                                <div class="sidebar-item">
+                                    <div class="icon-label-container">
+                                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24"
+                                            viewBox="0 0 128 128">
+                                            <path
+                                                d="M82.1 117.9c.4 0 .8-.1 1.2-.2 1.5-.6 2.3-2.4 1.6-3.9l-9.3-22.3h20.4c2 0 3.9-1.2 4.6-3.1.8-1.9.3-4-1.2-5.5L56.5 41.1c-1.4-1.4-3.6-1.8-5.4-1-1.9.8-3 2.6-3 4.6v60.2c0 2.1 1.2 3.9 3.2 4.7.6.2 1.2.4 1.8.4 1.4 0 2.7-.6 3.6-1.6l13.5-14.4 9.2 22.2C79.9 117.2 81 117.9 82.1 117.9zM40.6 22.7c.5 1.2 1.6 1.8 2.8 1.8.4 0 .8-.1 1.2-.2 1.5-.6 2.3-2.4 1.6-3.9L40.3 6.5c-.6-1.5-2.4-2.3-3.9-1.6-1.5.6-2.3 2.4-1.6 3.9L40.6 22.7zM16.7 32.4L31 36.9c.3.1.6.1.9.1 1.3 0 2.5-.8 2.9-2.1.5-1.6-.4-3.3-2-3.8l-14.3-4.5c-1.6-.5-3.3.4-3.8 2C14.2 30.2 15.1 31.9 16.7 32.4zM58.9 24.9c.4.2.9.3 1.4.3 1.1 0 2.1-.6 2.7-1.6l7-13.3c.8-1.5.2-3.3-1.3-4-1.5-.8-3.3-.2-4 1.3l-7 13.3C56.9 22.4 57.4 24.2 58.9 24.9z"
+                                                fill="#ffffff"></path>
+                                        </svg>
+                                        <label for="custom-cursor-file"> Custom Cursor </label>
+                                    </div>
+                                    <span id="filename5" class="file-name-display no-file">
+                                        <p>No file chosen</p>
+
+                                        <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M12 15L12 2M12 2L15 5.5M12 2L9 5.5" stroke="#777"
+                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                            </path>
+                                            <path
+                                                d="M8 22.0002H16C18.8284 22.0002 20.2426 22.0002 21.1213 21.1215C22 20.2429 22 18.8286 22 16.0002V15.0002C22 12.1718 22 10.7576 21.1213 9.8789C20.3529 9.11051 19.175 9.01406 17 9.00195M7 9.00195C4.82497 9.01406 3.64706 9.11051 2.87868 9.87889C2 10.7576 2 12.1718 2 15.0002L2 16.0002C2 18.8286 2 20.2429 2.87868 21.1215C3.17848 21.4213 3.54062 21.6188 4 21.749"
+                                                stroke="#777" stroke-width="1.5" stroke-linecap="round"></path>
+                                        </svg>
+                                    </span>
+                                    <input type="file" id="custom-cursor-file5" class="custom-file-upload"
+                                        onchange="updateFileName5()" name="">
+                                </div>
+                                <!-------------------page Alias----------------->
+                                <div class="sidebar-item">
+                                    <div class="icon-label-container textInputHeading discord-heading">
+                                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="18" height="23"
+                                            viewBox="0 0 30 30">
+                                            <path
+                                                d="M25.12,6.946c-2.424-1.948-6.257-2.278-6.419-2.292c-0.256-0.022-0.499,0.123-0.604,0.357 c-0.004,0.008-0.218,0.629-0.425,1.228c2.817,0.493,4.731,1.587,4.833,1.647c0.478,0.278,0.638,0.891,0.359,1.368 C22.679,9.572,22.344,9.75,22,9.75c-0.171,0-0.343-0.043-0.501-0.135C21.471,9.598,18.663,8,15.002,8 C11.34,8,8.531,9.599,8.503,9.615C8.026,9.892,7.414,9.729,7.137,9.251C6.86,8.775,7.021,8.164,7.497,7.886 c0.102-0.06,2.023-1.158,4.848-1.65c-0.218-0.606-0.438-1.217-0.442-1.225c-0.105-0.235-0.348-0.383-0.604-0.357 c-0.162,0.013-3.995,0.343-6.451,2.318C3.564,8.158,1,15.092,1,21.087c0,0.106,0.027,0.209,0.08,0.301 c1.771,3.11,6.599,3.924,7.699,3.959c0.007,0.001,0.013,0.001,0.019,0.001c0.194,0,0.377-0.093,0.492-0.25l1.19-1.612 c-2.61-0.629-3.99-1.618-4.073-1.679c-0.444-0.327-0.54-0.953-0.213-1.398c0.326-0.443,0.95-0.541,1.394-0.216 C7.625,20.217,10.172,22,15,22c4.847,0,7.387-1.79,7.412-1.808c0.444-0.322,1.07-0.225,1.395,0.221 c0.324,0.444,0.23,1.066-0.212,1.392c-0.083,0.061-1.456,1.048-4.06,1.677l1.175,1.615c0.115,0.158,0.298,0.25,0.492,0.25 c0.007,0,0.013,0,0.019-0.001c1.101-0.035,5.929-0.849,7.699-3.959c0.053-0.092,0.08-0.195,0.08-0.301 C29,15.092,26.436,8.158,25.12,6.946z M11,19c-1.105,0-2-1.119-2-2.5S9.895,14,11,14s2,1.119,2,2.5S12.105,19,11,19z M19,19 c-1.105,0-2-1.119-2-2.5s0.895-2.5,2-2.5s2,1.119,2,2.5S20.105,19,19,19z"
+                                                stroke="white" fill="white" />
+                                        </svg>
+
+                                        <label for=" discord-presence-select">
+                                            <p>Page Alias</p>
+                                        </label>
+                                    </div>
+                                    <div id="dropdown" class="dropdown">
+                                        <input type="text" class="textInput" placeholder="Alias" name="" />
+                                    </div>
+                                </div>
+                                <!-------------------Profile Size----------------->
+                                <div class="sidebar-item">
+                                    <div class="icon-label-container profile-opacity-heading">
+                                        <svg fill="#ffff" width="22px" height="21px" viewBox="0 0 32 32" id="icon"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <defs>
+                                                <style>
+                                                    .cls-1 {
+                                                        fill: none;
+                                                    }
+                                                </style>
+                                            </defs>
+                                            <title>opacity</title>
+                                            <rect x="6" y="6" width="4" height="4"></rect>
+                                            <rect x="10" y="10" width="4" height="4"></rect>
+                                            <rect x="14" y="6" width="4" height="4"></rect>
+                                            <rect x="22" y="6" width="4" height="4"></rect>
+                                            <rect x="6" y="14" width="4" height="4"></rect>
+                                            <rect x="14" y="14" width="4" height="4"></rect>
+                                            <rect x="22" y="14" width="4" height="4"></rect>
+                                            <rect x="6" y="22" width="4" height="4"></rect>
+                                            <rect x="14" y="22" width="4" height="4"></rect>
+                                            <rect x="22" y="22" width="4" height="4"></rect>
+                                            <rect x="18" y="10" width="4" height="4"></rect>
+                                            <rect x="10" y="18" width="4" height="4"></rect>
+                                            <rect x="18" y="18" width="4" height="4"></rect>
+                                            <rect id="_Transparent_Rectangle_" data-name="<Transparent Rectangle>"
+                                                class="cls-1" width="32" height="32"></rect>
+                                        </svg>
+
+                                        <label class="slider-label" for="profile-opacity-range">Profile Size</label>
+                                    </div>
+
+                                    <div class="ranger-container">
+                                        <div class="rangeBox">
+                                            <div class="range-row">
+                                                <input class="range" id="range5" type="range" value="0" min="0"
+                                                    max="100" name="">
+                                            </div>
+                                            <div id="rangeVal5" class="result">0</div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <!-------------------Custom Layout----------------->
+                                <div class="sidebar-item font-container">
+                                    <div class="icon-label-container font-heading">
+                                        <svg width="17px" height="17px" viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M14.5 7l.9 3.6 3.6.9-3.6.9-.9 3.6-.9-3.6-3.6-.9 3.6-.9zm-1.725 2.775L5.877 11.5l6.898 1.725 1.725 6.898 1.725-6.898 6.898-1.725-6.898-1.725L14.5 2.877zM6 4l-.5-4L5 4l-4 .5L5 5l.5 4L6 5l4-.5zm1 14l-.5-4-.5 4-4 .5 4 .5.5 4 .5-4 4-.5z"
+                                                stroke="white"></path>
+                                            <path fill="none" d="M0 0h24v24H0z"></path>
+                                        </svg>
+                                        <label for="background-fonts-select">
+                                            <p>Custom Layout</p>
+                                        </label>
+                                    </div>
+                                    <input hidden id="effect-hidden-input7">
+                                    <div id="dropdown-effect7" class="dropdown-effect">
+                                        <div class="dropdown-effect-header">
+                                            <span id="discord-input-effect7"
+                                                class="dropdown-effect-title">Default</span>
+                                            <div class="dropdown-font-icon">
+                                                <svg class="dropdown-font-arrow" width="20px" height="20px"
+                                                    viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                        d="M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z"
+                                                        fill="#777"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <div class="dropdown-effect-list" style="display: none;">
+                                            <div class="dropdown-effect-item">None</div>
+                                            <div class="dropdown-effect-item">Snowflakes</div>
+                                            <div class="dropdown-effect-item">Bats (COMING SOON)</div>
+                                            <div class="dropdown-effect-item">TV (COMING SOON)</div>
+                                        </div>
+                                    </div>
+                                    <!-- </div>                                                               
+                                <div class="toggle-container">
+                                    <span class="toggle-label">Monochrome Icons</span>
+                                    <label class="switch">
+                                        <input type="checkbox" name="" id="monochrome-toggle">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="toggle-container">
+                                    <span class="toggle-label">Monochrome Icons</span>
+                                    <label class="switch">
+                                        <input type="checkbox" name="" id="monochrome-toggle">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div> -->
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="add-item">
+                    <i class="fas fa-plus"></i>
+                    Save
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // ----------------------------------hamburger code 
+        document.addEventListener("DOMContentLoaded", function () {
+            const hamburgerBtn = document.getElementById("hamburger-btn");
+            const crossBtn = document.getElementById("cross-btn");
+            const sidebar = document.querySelector(".sidebar");
+
+            function toggleSidebar() {
+                sidebar.classList.toggle("active");
+                crossBtn.classList.toggle("show"); // Use class to manage visibility
+                hamburgerBtn.style.display = sidebar.classList.contains("active") ? "none" : "block";
+            }
+
+            hamburgerBtn.addEventListener("click", toggleSidebar);
+            crossBtn.addEventListener("click", function () {
+                sidebar.classList.remove("active");
+                this.classList.remove("show"); // Hide cross button
+                hamburgerBtn.style.display = "block"; // Show hamburger button
+            });
+        });
+
+
+
+
+
+        ////////////////////////////////////////////////customize toggle
+
+        function toggleMenu(header) {
+            header.classList.toggle("active");
+            var content = header.nextElementSibling;
+            content.classList.toggle("active");
+        }
+
+        // -------------------------custom cursor code---------------------------------------//
+
+        function updateFileName() {
+            var fileInput = document.getElementById("custom-cursor-file");
+            var filenameDisplay = document.getElementById("filename");
+            var files = fileInput.files;
+
+            if (files.length > 0) {
+                filenameDisplay.textContent = files[0].name;
+                filenameDisplay.classList.remove("no-file");
+            } else {
+                filenameDisplay.textContent = "No file chosen";
+                filenameDisplay.classList.add("no-file");
+            }
+        }
+
+        // Trigger the file input when the filename display is clicked
+        document
+            .getElementById("filename")
+            .addEventListener("click", function () {
+                document.getElementById("custom-cursor-file").click();
+            });
+
+        // --------------------------audio file upload----------------------------------/////////
+        function updateFileName2() {
+            var fileInput = document.getElementById("custom-cursor-file2");
+            var filenameDisplay = document.getElementById("filename2");
+            var files = fileInput.files;
+
+            if (files.length > 0) {
+                filenameDisplay.textContent = files[0].name;
+                filenameDisplay.classList.remove("no-file");
+            } else {
+                filenameDisplay.textContent = "No file chosen";
+                filenameDisplay.classList.add("no-file");
+            }
+        }
+
+        // Trigger the second file input when the filename display is clicked
+        document
+            .getElementById("filename2")
+            .addEventListener("click", function () {
+                document.getElementById("custom-cursor-file2").click();
+            });
+
+        // // -------------------------dicord custom input feild --------------------------------------//
+
+        // const dropdownHeader = document.querySelector(".dropdown-header");
+        // const dropdown = document.querySelector(".dropdown");
+        // const dropdownArrow = document.querySelector(".dropdown-arrow");
+        // const dropdownList = document.querySelector(".dropdown-list");
+        // const inputEnter = document.getElementById("discord-input");
+
+        // dropdownHeader.addEventListener("click", () => {
+        //     const isOpen = dropdown.classList.contains("open");
+        //     dropdownList.style.display = isOpen ? "none" : "block";
+        //     dropdown.classList.toggle("open", !isOpen); // Toggle the "open" class
+        //     dropdownArrow.classList.toggle("rotate", !isOpen); // Toggle the "rotate" class
+        // });
+
+        // const dropdownItems = document.querySelectorAll(".dropdown-item");
+        // dropdownItems.forEach((item) => {
+        //     item.addEventListener("click", (e) => {
+        //         const selectedValue = e.target.textContent;
+        //         console.log(selectedValue); // You can handle the selected value here
+        //         inputEnter.innerHTML = selectedValue;
+
+        //         dropdown.classList.remove("open"); // Remove the "open" class
+        //         dropdownArrow.classList.remove("rotate"); // Remove the "rotate" class when selecting a value
+        //         dropdownList.style.display = "none";
+        //     });
+        // });
+
+        // // Clicking outside the dropdown will close it
+        // window.addEventListener("click", (e) => {
+        //     if (!dropdown.contains(e.target)) {
+        //         dropdownList.style.display = "none";
+        //         dropdown.classList.remove("open"); // Remove the "open" class when clicking outside
+        //         dropdownArrow.classList.remove("rotate"); // Remove the "rotate" class when clicking outside
+        //     }
+        // });
+
+        // -------------------------volume Slider--------------------------------------//
+
+        // const range = document.querySelector(".range");
+        // const rangeVal = document.getElementById("rangeVal");
+
+        // range.addEventListener("mousemove", updateRangeValue);
+        // range.addEventListener("touchmove", updateRangeValue);
+
+        // function updateRangeValue() {
+        //     let result = range.value;
+        //     if (result > 0) {
+        //         rangeVal.textContent = result + "%";
+        //     } else {
+        //         rangeVal.textContent = result;
+        //     }
+        // }
+        const range7 = document.getElementById("range7");
+        const rangeVal7 = document.getElementById("rangeVal7");
+
+        range7.addEventListener("mousemove", () => updateRangeValue(range7, rangeVal7));
+        range7.addEventListener("touchmove", () => updateRangeValue(range7, rangeVal7));
+
+        function updateRangeValue(rangeElement, displayElement) {
+            let result = rangeElement.value;
+            displayElement.textContent = result > 0 ? result + "%" : result;
+        }
+
+        // Initialize the display for the third slider
+        updateRangeValue(range7, rangeVal7);
+
+        // -------------------------profile Slider--------------------------------------//
+        const range2 = document.getElementById("range2");
+        const rangeVal2 = document.getElementById("rangeVal2");
+
+        range2.addEventListener("mousemove", () => updateRangeValue(range2, rangeVal2));
+        range2.addEventListener("touchmove", () => updateRangeValue(range2, rangeVal2));
+
+        function updateRangeValue(rangeElement, displayElement) {
+            let result = rangeElement.value;
+            displayElement.textContent = result > 0 ? result + "%" : result;
+        }
+
+        // Initialize the display for the second slider
+        updateRangeValue(range2, rangeVal2);
+
+        // -------------------------profile blur Slider--------------------------------------//
+        const range3 = document.getElementById("range3");
+        const rangeVal3 = document.getElementById("rangeVal3");
+
+        range3.addEventListener("mousemove", () => updateRangeValue(range3, rangeVal3));
+        range3.addEventListener("touchmove", () => updateRangeValue(range3, rangeVal3));
+
+        function updateRangeValue(rangeElement, displayElement) {
+            let result = rangeElement.value;
+            displayElement.textContent = result > 0 ? result + "%" : result;
+        }
+
+        // Initialize the display for the third slider
+        updateRangeValue(range3, rangeVal3);
+
+        // -------------------------Background Effect--------------------------------------//
+        const dropdownHeaderEffect = document.querySelector(
+            ".dropdown-effect-header"
+        );
+        const dropdownEffect = document.querySelector(".dropdown-effect");
+        const dropdownArrowEffect = document.querySelector(
+            ".dropdown-effect-arrow"
+        );
+        const dropdownListEffect = document.querySelector(
+            ".dropdown-effect-list"
+        );
+        const inputEffectEnter = document.getElementById("discord-input-effect");
+
+        dropdownHeaderEffect.addEventListener("click", () => {
+            const isOpen = dropdownEffect.classList.contains("open");
+            dropdownListEffect.style.display = isOpen ? "none" : "block";
+            dropdownEffect.classList.toggle("open", !isOpen); // Toggle the "open" class
+            dropdownArrowEffect.classList.toggle("rotate", !isOpen); // Toggle the "rotate" class
+        });
+
+        const dropdownItemsEffect = document.querySelectorAll(
+            ".dropdown-effect-item"
+        );
+        dropdownItemsEffect.forEach((item) => {
+            item.addEventListener("click", (e) => {
+                const selectedValue = e.target.textContent;
+                console.log(selectedValue); // You can handle the selected value here
+                inputEffectEnter.innerHTML = selectedValue;
+
+                dropdownEffect.classList.remove("open"); // Remove the "open" class
+                dropdownArrowEffect.classList.remove("rotate"); // Remove the "rotate" class when selecting a value
+                dropdownListEffect.style.display = "none";
+            });
+        });
+
+        // Clicking outside the dropdown will close it
+        window.addEventListener("click", (e) => {
+            if (!dropdownEffect.contains(e.target)) {
+                dropdownListEffect.style.display = "none";
+                dropdownEffect.classList.remove("open"); // Remove the "open" class when clicking outside
+                dropdownArrowEffect.classList.remove("rotate"); // Remove the "rotate" class when clicking outside
+            }
+        });
+
+
+        // -------------------------username effect--------------------------------------//
+
+
+        const dropdownHeaderEffect2 = document.querySelector("#dropdown-effect2 .dropdown-effect-header");
+        const dropdownEffect2 = document.getElementById("dropdown-effect2");
+        const dropdownArrowEffect2 = dropdownEffect2.querySelector(".dropdown-effect-arrow");
+        const dropdownListEffect2 = dropdownEffect2.querySelector(".dropdown-effect-list");
+        const inputEffectEnter2 = document.getElementById("discord-input-effect2");
+
+        dropdownHeaderEffect2.addEventListener("click", () => {
+            const isOpen = dropdownEffect2.classList.contains("open");
+            dropdownListEffect2.style.display = isOpen ? "none" : "block";
+            dropdownEffect2.classList.toggle("open", !isOpen); // Toggle the "open" class
+        });
+
+        const dropdownItemsEffect2 = dropdownEffect2.querySelectorAll(".dropdown-effect-item");
+        dropdownItemsEffect2.forEach((item) => {
+            item.addEventListener("click", (e) => {
+                const selectedValue = e.target.textContent;
+                console.log(selectedValue); // You can handle the selected value here
+                inputEffectEnter2.textContent = selectedValue;
+
+                dropdownEffect2.classList.remove("open"); // Remove the "open" class
+                dropdownListEffect2.style.display = "none";
+            });
+        });
+
+        // Clicking outside the dropdown will close it
+        window.addEventListener("click", (e) => {
+            if (!dropdownEffect2.contains(e.target)) {
+                dropdownListEffect2.style.display = "none";
+                dropdownEffect2.classList.remove("open"); // Remove the "open" class when clicking outside
+            }
+        });
+        // -------------------------glow effect--------------------------------------//
+        const dropdownHeaderEffect3 = document.querySelector("#dropdown-effect3 .dropdown-effect-header");
+        const dropdownEffect3 = document.getElementById("dropdown-effect3");
+        const dropdownArrowEffect3 = dropdownEffect3.querySelector(".dropdown-effect-arrow");
+        const dropdownListEffect3 = dropdownEffect3.querySelector(".dropdown-effect-list");
+        const inputEffectEnter3 = document.getElementById("discord-input-effect3");
+
+        dropdownHeaderEffect3.addEventListener("click", () => {
+            const isOpen = dropdownEffect3.classList.contains("open");
+            dropdownListEffect3.style.display = isOpen ? "none" : "block";
+            dropdownEffect3.classList.toggle("open", !isOpen); // Toggle the "open" class
+        });
+
+        const dropdownItemsEffect3 = dropdownEffect3.querySelectorAll(".dropdown-effect-item");
+        dropdownItemsEffect3.forEach((item) => {
+            item.addEventListener("click", (e) => {
+                const selectedValue = e.target.textContent;
+                inputEffectEnter3.textContent = selectedValue;
+
+                dropdownEffect3.classList.remove("open"); // Remove the "open" class
+                dropdownListEffect3.style.display = "none";
+            });
+        });
+
+        // Clicking outside the dropdown will close it
+        window.addEventListener("click", (e) => {
+            if (!dropdownEffect3.contains(e.target)) {
+                dropdownListEffect3.style.display = "none";
+                dropdownEffect3.classList.remove("open"); // Remove the "open" class when clicking outside
+            }
+        });
+        // -------------------------Discord presence--------------------------------------//
+        const dropdownHeaderEffect4 = document.querySelector("#dropdown-effect4 .dropdown-effect-header");
+        const dropdownEffect4 = document.getElementById("dropdown-effect4");
+        const dropdownArrowEffect4 = dropdownEffect4.querySelector(".dropdown-effect-arrow");
+        const dropdownListEffect4 = dropdownEffect4.querySelector(".dropdown-effect-list");
+        const inputEffectEnter4 = document.getElementById("discord-input-effect4");
+
+        dropdownHeaderEffect4.addEventListener("click", () => {
+            const isOpen = dropdownEffect4.classList.contains("open");
+            dropdownListEffect4.style.display = isOpen ? "none" : "block";
+            dropdownEffect4.classList.toggle("open", !isOpen);
+        });
+
+        const dropdownItemsEffect4 = dropdownEffect4.querySelectorAll(".dropdown-effect-item");
+        dropdownItemsEffect4.forEach((item) => {
+            item.addEventListener("click", (e) => {
+                const selectedValue = e.target.textContent;
+                inputEffectEnter4.textContent = selectedValue;
+
+                dropdownEffect4.classList.remove("open");
+                dropdownListEffect4.style.display = "none";
+            });
+        });
+
+        window.addEventListener("click", (e) => {
+            if (!dropdownEffect4.contains(e.target)) {
+                dropdownListEffect4.style.display = "none";
+                dropdownEffect4.classList.remove("open");
+            }
+        });
+
+        // -------------------------server presence--------------------------------------//
+        const dropdownHeaderEffect5 = document.querySelector("#dropdown-effect5 .dropdown-effect-header");
+        const dropdownEffect5 = document.getElementById("dropdown-effect5");
+        const dropdownArrowEffect5 = dropdownEffect5.querySelector(".dropdown-effect-arrow");
+        const dropdownListEffect5 = dropdownEffect5.querySelector(".dropdown-effect-list");
+        const inputEffectEnter5 = document.getElementById("discord-input-effect5");
+
+        dropdownHeaderEffect5.addEventListener("click", () => {
+            const isOpen = dropdownEffect5.classList.contains("open");
+            dropdownListEffect5.style.display = isOpen ? "none" : "block";
+            dropdownEffect5.classList.toggle("open", !isOpen);
+        });
+
+        const dropdownItemsEffect5 = dropdownEffect5.querySelectorAll(".dropdown-effect-item");
+        dropdownItemsEffect5.forEach((item) => {
+            item.addEventListener("click", (e) => {
+                const selectedValue = e.target.textContent;
+                inputEffectEnter5.textContent = selectedValue;
+
+                dropdownEffect5.classList.remove("open");
+                dropdownListEffect5.style.display = "none";
+            });
+        });
+
+        window.addEventListener("click", (e) => {
+            if (!dropdownEffect5.contains(e.target)) {
+                dropdownListEffect5.style.display = "none";
+                dropdownEffect5.classList.remove("open");
+            }
+        });
+
+        // -------------------------cursor effect--------------------------------------//
+        const dropdownHeaderEffect6 = document.querySelector("#dropdown-effect6 .dropdown-effect-header");
+        const dropdownEffect6 = document.getElementById("dropdown-effect6");
+        const dropdownArrowEffect6 = dropdownEffect6.querySelector(".dropdown-effect-arrow");
+        const dropdownListEffect6 = dropdownEffect6.querySelector(".dropdown-effect-list");
+        const inputEffectEnter6 = document.getElementById("discord-input-effect6");
+
+        dropdownHeaderEffect6.addEventListener("click", () => {
+            const isOpen = dropdownEffect6.classList.contains("open");
+            dropdownListEffect6.style.display = isOpen ? "none" : "block";
+            dropdownEffect6.classList.toggle("open", !isOpen);
+        });
+
+        const dropdownItemsEffect6 = dropdownEffect6.querySelectorAll(".dropdown-effect-item");
+        dropdownItemsEffect6.forEach((item) => {
+            item.addEventListener("click", (e) => {
+                const selectedValue = e.target.textContent;
+                inputEffectEnter6.textContent = selectedValue;
+
+                dropdownEffect6.classList.remove("open");
+                dropdownListEffect6.style.display = "none";
+            });
+        });
+
+        window.addEventListener("click", (e) => {
+            if (!dropdownEffect6.contains(e.target)) {
+                dropdownListEffect6.style.display = "none";
+                dropdownEffect6.classList.remove("open");
+            }
+        });
+
+        // -------------------------custom layout--------------------------------------//
+        const dropdownHeaderEffect7 = document.querySelector("#dropdown-effect7 .dropdown-effect-header");
+        const dropdownEffect7 = document.getElementById("dropdown-effect7");
+        const dropdownArrowEffect7 = dropdownEffect7.querySelector(".dropdown-effect-arrow");
+        const dropdownListEffect7 = dropdownEffect7.querySelector(".dropdown-effect-list");
+        const inputEffectEnter7 = document.getElementById("discord-input-effect7");
+
+        dropdownHeaderEffect7.addEventListener("click", () => {
+            const isOpen = dropdownEffect7.classList.contains("open");
+            dropdownListEffect7.style.display = isOpen ? "none" : "block";
+            dropdownEffect7.classList.toggle("open", !isOpen);
+        });
+
+        const dropdownItemsEffect7 = dropdownEffect7.querySelectorAll(".dropdown-effect-item");
+        dropdownItemsEffect7.forEach((item) => {
+            item.addEventListener("click", (e) => {
+                const selectedValue = e.target.textContent;
+                inputEffectEnter7.textContent = selectedValue;
+
+                dropdownEffect7.classList.remove("open");
+                dropdownListEffect7.style.display = "none";
+            });
+        });
+
+        window.addEventListener("click", (e) => {
+            if (!dropdownEffect7.contains(e.target)) {
+                dropdownListEffect7.style.display = "none";
+                dropdownEffect7.classList.remove("open");
+            }
+        });
+
+        // -------------------------Badges--------------------------------------//
+        const dropdownHeaderBadge = document.querySelector(
+            ".dropdown-badge-header"
+        );
+        const dropdownBadge = document.querySelector(".dropdown-badge");
+        const dropdownArrowBadge = document.querySelector(
+            ".dropdown-badge-arrow"
+        );
+        const dropdownListBadge = document.querySelector(".dropdown-badge-list");
+        const inputBadgeEnter = document.getElementById("discord-input-badge");
+
+        dropdownHeaderBadge.addEventListener("click", () => {
+            const isOpen = dropdownBadge.classList.contains("open");
+            dropdownListBadge.style.display = isOpen ? "none" : "block";
+            dropdownBadge.classList.toggle("open", !isOpen);
+            dropdownArrowBadge.classList.toggle("rotate", !isOpen);
+        });
+
+        const dropdownItemsBadge = document.querySelectorAll(
+            ".dropdown-badge-item"
+        );
+        dropdownItemsBadge.forEach((item) => {
+            item.addEventListener("click", (e) => {
+                const selectedValue = e.target.textContent;
+                console.log(selectedValue);
+                inputBadgeEnter.innerHTML = selectedValue;
+                dropdownBadge.classList.remove("open");
+                dropdownArrowBadge.classList.remove("rotate");
+                dropdownListBadge.style.display = "none";
+            });
+        });
+
+        window.addEventListener("click", (e) => {
+            if (!dropdownBadge.contains(e.target)) {
+                dropdownListBadge.style.display = "none";
+                dropdownBadge.classList.remove("open");
+                dropdownArrowBadge.classList.remove("rotate");
+            }
+        });
+
+        // -------------------------color picker--------------------------------------//
+        function openEyeDropper() {
+            const resultElement = document.getElementById("result");
+
+            if (!window.EyeDropper) {
+                resultElement.textContent =
+                    "Your browser does not support the EyeDropper API";
+                return;
+            }
+
+            const eyeDropper = new EyeDropper();
+
+            eyeDropper
+                .open()
+                .then((result) => {
+                    updateColorResult(result.sRGBHex); // Update the span and input color
+                })
+                .catch((e) => {
+                    resultElement.textContent = "Error: " + e.toString();
+                });
+        }
+
+        // Function to update color result
+        function updateColorResult(hexColor) {
+            const colorInput = document.getElementById("color-picker");
+            const resultElement = document.getElementById("result");
+            colorInput.value = hexColor;
+            resultElement.textContent = hexColor;
+        }
+
+        // Event listener for the color input
+        document
+            .getElementById("color-picker")
+            .addEventListener("input", (event) => {
+                updateColorResult(event.target.value); // Update the span with the new color
+            });
+
+        // --------------------------------text color picker-----------------------------------------
+        function openEyeDropper2() {
+            const resultElement2 = document.getElementById("result2");
+
+            if (!window.EyeDropper) {
+                resultElement2.textContent = "Your browser does not support the EyeDropper API";
+                return;
+            }
+
+            const eyeDropper2 = new EyeDropper();
+
+            eyeDropper2
+                .open()
+                .then((result) => {
+                    updateColorResult2(result.sRGBHex); // Update the span and input color
+                })
+                .catch((e) => {
+                    resultElement2.textContent = "Error: " + e.toString();
+                });
+        }
+
+        // Function to update color result for the second picker
+        function updateColorResult2(hexColor) {
+            const colorInput2 = document.getElementById("color-picker2");
+            const resultElement2 = document.getElementById("result2");
+            colorInput2.value = hexColor;
+            resultElement2.textContent = hexColor;
+        }
+
+        // Event listener for the second color input
+        document.getElementById("color-picker2").addEventListener("input", (event) => {
+            updateColorResult2(event.target.value); // Update the span with the new color
+        });
+        // ------------------------accent color picker-----------------------------------------
+        function openEyeDropper3() {
+            const resultElement3 = document.getElementById("result3");
+
+            if (!window.EyeDropper) {
+                resultElement3.textContent = "Your browser does not support the EyeDropper API";
+                return;
+            }
+
+            const eyeDropper3 = new EyeDropper();
+
+            eyeDropper3
+                .open()
+                .then((result) => {
+                    updateColorResult3(result.sRGBHex); // Update the span and input color
+                })
+                .catch((e) => {
+                    resultElement3.textContent = "Error: " + e.toString();
+                });
+        }
+
+        // Function to update color result for the third picker
+        function updateColorResult3(hexColor) {
+            const colorInput3 = document.getElementById("color-picker3");
+            const resultElement3 = document.getElementById("result3");
+            colorInput3.value = hexColor;
+            resultElement3.textContent = hexColor;
+        }
+
+        // Event listener for the third color input
+        document.getElementById("color-picker3").addEventListener("input", (event) => {
+            updateColorResult3(event.target.value); // Update the span with the new color
+        });
+
+        // -------------------------Custom font--------------------------------------//
+        const dropdownHeaderFont = document.querySelector(
+            ".dropdown-font-header"
+        );
+
+        const dropdownFont = document.querySelector(".dropdown-font");
+        const dropdownArrowFont = document.querySelector(".dropdown-font-arrow");
+        const dropdownListFont = document.querySelector(".dropdown-font-list");
+        const inputFontEnter = document.getElementById("discord-input-font");
+
+        dropdownHeaderFont.addEventListener("click", () => {
+            const isOpen = dropdownFont.classList.contains("open");
+            dropdownListFont.style.display = isOpen ? "none" : "block";
+            dropdownFont.classList.toggle("open", !isOpen);
+            dropdownArrowFont.classList.toggle("rotate", !isOpen);
+        });
+
+        const dropdownItemsFont = document.querySelectorAll(
+            ".dropdown-font-item"
+        );
+        dropdownItemsFont.forEach((item) => {
+            item.addEventListener("click", (e) => {
+                const selectedValue = e.target.textContent;
+                console.log(selectedValue);
+                inputFontEnter.innerHTML = selectedValue;
+                dropdownFont.classList.remove("open");
+                dropdownArrowFont.classList.remove("rotate");
+                dropdownListFont.style.display = "none";
+            });
+        });
+
+        window.addEventListener("click", (e) => {
+            if (!dropdownFont.contains(e.target)) {
+                dropdownListFont.style.display = "none";
+                dropdownFont.classList.remove("open");
+                dropdownArrowFont.classList.remove("rotate");
+            }
+        });
+        //--------------------------------- profile size ranger
+        const range5 = document.getElementById("range5");
+        const rangeVal5 = document.getElementById("rangeVal5");
+
+        range5.addEventListener("mousemove", () => updateRangeValue(range5, rangeVal5));
+        range5.addEventListener("touchmove", () => updateRangeValue(range5, rangeVal5));
+
+        function updateRangeValue(rangeElement, displayElement) {
+            let result = rangeElement.value;
+            displayElement.textContent = result > 0 ? result + "%" : result;
+        }
+
+        // Initialize the display for the third slider
+        updateRangeValue(range5, rangeVal5);
+
+
+        // custom cusror uploader
+        function updateFileName5() {
+            var fileInput = document.getElementById("custom-cursor-file5");
+            var filenameDisplay = document.getElementById("filename5");
+            var files = fileInput.files;
+
+            if (files.length > 0) {
+                filenameDisplay.textContent = files[0].name;
+                filenameDisplay.classList.remove("no-file");
+            } else {
+                filenameDisplay.textContent = "No file chosen";
+                filenameDisplay.classList.add("no-file");
+            }
+        }
+
+        // Trigger the second file input when the filename display is clicked
+        document
+            .getElementById("filename5")
+            .addEventListener("click", function () {
+                document.getElementById("custom-cursor-file5").click();
+            });
+
+    </script>
+</body>
+
+</html>

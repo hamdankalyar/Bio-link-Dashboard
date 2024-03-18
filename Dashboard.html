@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+  <title>Xihu Dashboard</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background-color: #0a0a0a;
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+
+    .sidebar {
+      background-color: #0e0e0e;
+      width: 220px;
+      box-shadow: 10px 0 10px rgba(0, 0, 0, .35);
+      height: 100%;
+      position: fixed;
+      padding-bottom: 4%;
+      padding-top: 10%;
+      border-left: hidden;
+      border-top: hidden;
+      border-bottom: hidden;
+      padding-top: 20px;
+      overflow: hidden;
+      padding-right: 20px;
+      padding-left: 20px;
+    }
+
+    .top-bar {
+      padding: 20px 30px;
+      margin-left: 240px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-top: 40px;
+    }
+
+    .top-bar #upgrade {
+      background: linear-gradient(91deg, #181729 -8.29%, #7c17cc 106.01%);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .top-bar #not-btn {
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: transparent;
+      border: 1px solid gray;
+      margin-left: 5px;
+    }
+
+    .profile-card {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .profile-card img {
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+    }
+
+    .profile-card .card-heading {
+      margin: 10px 0 0 0;
+      font-size: 17px;
+    }
+
+    .profile-card p {
+      margin: 5px 0;
+      font-size: 14px;
+    }
+
+    .profile-card button {
+      padding: 6px;
+      font-size: 10px;
+      background: #141414;
+      border: 1px solid #202020;
+      border-radius: 5px;
+      color: white;
+    }
+
+
+    .menubar {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    .menubar a {
+      margin-left: 7px;
+    }
+
+    .menu-item {
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+
+      padding-left: 9px;
+      padding-right: 9px;
+      padding-bottom: 5px;
+      padding-top: 5px;
+    }
+
+    .menu-item a {
+      margin-top: 0px;
+      margin-bottom: 0px;
+      text-decoration: none;
+      color: white;
+    }
+
+    .menu-item:hover {
+      background-color: #293060;
+      border-radius: 6px;
+    }
+
+    .hover-item {
+      background-color: #293060;
+      border-radius: 6px;
+    }
+
+    .content {
+      margin-left: 250px;
+      padding: 20px;
+    }
+
+    .welcome {
+      font-size: 24px;
+    }
+
+    .top-info {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .logo-container img {
+      width: 100%;
+    }
+
+    .gradient-background {
+      position: relative;
+      margin-bottom: 45px;
+    }
+
+    .profile-card {
+      position: relative;
+      z-index: 2;
+      /* Ensures the profile card is above the background image */
+    }
+
+    .gradient-background #gradient {
+      position: absolute;
+      top: -140px;
+      left: -60px;
+      width: 310%;
+      z-index: -1;
+      opacity: 40%;
+    }
+
+    #cross-btn {
+      display: flex;
+      background: #141414;
+      border: 2px solid #202020;
+      border-radius: 9px;
+      color: #ffffff;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      margin-left: auto;
+      display: none;
+    }
+
+    /* Styles that apply to all screen sizes */
+    .sidebar {
+      display: block;
+      /* Show sidebar by default */
+    }
+
+    #hamburger-btn {
+      display: none;
+      /* Hide hamburger button by default */
+    }
+
+    #cross-btn {
+      display: none;
+      /* Ensure cross button is hidden by default */
+    }
+
+
+
+    /* Small screens */
+    @media (max-width: 1041px) {
+
+
+
+      .sidebar {
+        width: 220px;
+        /* Set sidebar width */
+        position: fixed;
+        box-shadow: 10px 0 10px rgba(0, 0, 0, .35);
+        top: 0;
+        left: 0;
+        /* Position sidebar to the left */
+        height: 100%;
+        /* Full height */
+        z-index: 1000;
+        /* Ensure sidebar is above other content */
+        transform: translateX(-100%);
+        /* Start off-screen */
+        transition: transform 0.3s ease-in-out;
+        /* Smooth transition */
+        display: block;
+        /* Ensure sidebar is display block for animation */
+        border-radius: 30px;
+      }
+
+      .sidebar.active {
+        transform: translateX(0%);
+        /* Slide in */
+      }
+
+      #hamburger-btn {
+        display: block;
+        z-index: 1001;
+        border-radius: 9px;
+        border: none;
+        background: #141414;
+        border: 2px solid #202020;
+        padding: 5px 8px;
+        position: absolute;
+        left: 25px;
+      }
+
+      #cross-btn {
+        display: none;
+        /* Initially hidden, shown when sidebar is active */
+      }
+
+      #cross-btn.show {
+        display: flex;
+        /* Show when sidebar is open */
+      }
+
+      .top-bar {
+
+        margin-left: 0px;
+        display: flex;
+        align-items: center;
+        padding-top: 40px;
+        justify-content: center;
+
+      }
+
+      .top-btns {
+        display: none;
+
+      }
+
+      /* ----------------------------------dashboard-------------------- */
+      .content {
+        margin-left: 0px;
+      }
+
+      .info-card {
+
+
+
+        flex-basis: 100% !important;
+        margin-bottom: 20px;
+      }
+
+      .top-info {
+
+
+        flex-wrap: wrap;
+      }
+
+      .dashboard {
+
+        height: fit-content !important;
+        flex-wrap: wrap;
+      }
+
+      .chart-upper {
+        width: 100% !important;
+
+      }
+
+      .notification {
+
+        width: 100% !important;
+
+
+        margin: 20px auto;
+      }
+
+      .lower-cards {
+
+        flex-direction: column-reverse;
+        align-items: center;
+        width: 100%;
+        margin: 0 auto;
+      }
+
+      .account-container {
+
+        margin-top: 40px;
+        width: fit-content !important;
+      }
+
+      .invoices-container {
+
+        width: 100% !important;
+        height: 460px;
+      }
+    }
+
+
+    /* Hide the cross button on screens wider than 767px */
+    @media (min-width: 1042px) {
+      #cross-btn {
+        display: none !important;
+        /* Use !important to override inline styles if necessary */
+      }
+
+      #hamburger-btn {
+        display: none !important;
+        /* Ensure the hamburger button is also hidden on larger screens */
+      }
+
+      .sidebar {
+        transform: none !important;
+        /* Reset any transformation applied on smaller screens */
+        /* display: block !important; */
+        /* Ensure the sidebar is always shown on larger screens */
+      }
+    }
+
+
+
+    .top-info {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .info-card {
+      padding: 15px;
+      background-color: #111;
+      border-radius: 30px;
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+      flex-basis: calc(25% - 10px);
+      text-align: center;
+      position: relative;
+    }
+
+    .icon-heading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .info-card h4 {
+      font-size: 16px;
+      margin-left: 10px;
+      color: white;
+    }
+
+    .info-card p {
+      font-size: 24px;
+      margin: 0;
+      font-weight: bold;
+      color: white;
+    }
+
+    .dashboard {
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      margin: 30px;
+      overflow: hidden;
+      margin-left: 0px;
+      margin-right: 0px;
+      display: flex;
+      justify-content: space-between;
+      height: 330px;
+    }
+
+    .chart {
+      margin-bottom: 20px;
+    }
+
+    .chart-upper {
+      width: 69%;
+      background-color: #111;
+      padding-left: 20px;
+      padding-right: 20px;
+      border-radius: 13px;
+      color: white;
+    }
+
+    .chart p {
+      /* margin-left: 50px; */
+      font-size: 21px;
+      line-height: 30px;
+      margin-bottom: 0px;
+    }
+
+    .notification {
+      padding: 20px;
+      background-image: linear-gradient(20deg, #040404, #18071d);
+      background-origin: border-box;
+      border: 2px solid #65317493;
+      color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+      width: 30%;
+    }
+
+    .notification:before {
+      content: "";
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      background-color: rgba(255, 255, 255, 0.2);
+      height: 200px;
+      width: 200px;
+      border-radius: 100%;
+      transform: rotate(45deg);
+    }
+
+    .notification h4 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .notification p {
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+
+    .notification a {
+      text-decoration: none;
+      color: white;
+      background-image: linear-gradient(20deg, #040404, #18071d);
+      background-origin: border-box;
+      border: 1px solid #680d8393;
+      padding: 10px 15px;
+      border-radius: 5px;
+      display: inline-block;
+      margin-top: 70px;
+    }
+
+    .account-container {
+      background-color: #111;
+      border-radius: 8px;
+      padding: 20px;
+      width: 25%;
+      /* height: 460px; */
+    }
+
+    .account-header {
+      margin-bottom: 20px;
+    }
+
+    .account-header h2 {
+      margin: 0;
+    }
+
+    .account-header p {
+      color: #b9bbbe;
+      font-size: 14px;
+    }
+
+    .account-action {
+      background-color: #000000;
+
+      border-radius: 4px;
+      padding: 10px 15px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .account-action i {
+      margin-right: 10px;
+    }
+
+    .account-action span {
+      flex-grow: 1;
+    }
+
+    .connection-container {
+      margin-top: 30px;
+    }
+
+    .connection-header {
+      color: #b9bbbe;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .connect-button {
+      background-color: #2c1e93;
+      color: white;
+      text-align: center;
+      padding: 10px 0;
+      border-radius: 4px;
+      display: block;
+      text-decoration: none;
+    }
+
+    .invoices-container {
+      background-color: #111;
+      border-radius: 8px;
+      padding: 20px;
+      width: 72%;
+      height: 460px;
+    }
+
+    .invoice-cards {
+      overflow-y: auto;
+      height: 80%;
+    }
+
+    .invoice-card {
+      background-color: #000000;
+      border-radius: 4px;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      color: white;
+
+    }
+
+    .invoice-card img {
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .invoice-card .username {
+      flex-grow: 1;
+    }
+
+    .invoice-card .price {
+      margin-right: 10px;
+    }
+
+    .invoice-action {
+      background-color: #0c0d0f;
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 15px;
+      cursor: pointer;
+    }
+
+    .invoice-header {
+      color: white;
+      margin-bottom: 15px;
+    }
+
+    .lower-cards {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0px 0 30px 0;
+    }
+
+    #logo-img {
+      width: 38px;
+      height: 38px;
+
+    }
+
+    #logo-heading {
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    /* Thin scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      /* Width of the scrollbar */
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+      background: #0c0d0e;
+      /* Background color of the track */
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      background: #222;
+      /* Color of the scrollbar handle */
+    }
+
+    /*------------------------------------------- sidebar button styling----------------------------------------------- */
+    .card {
+      background-color: #bd1414;
+      border-radius: 20px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      color: white;
+      background-color: #0a0a0a;
+      text-align: center;
+      box-sizing: border-box;
+      position: relative;
+      border: 1px solid white;
+    }
+
+    .content-card p {
+      margin: 0;
+      padding: 0;
+      font-size: 12px;
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+
+    .illustration {
+      margin: 20px 0;
+    }
+
+    .illustration img {
+      width: 100px;
+      height: auto;
+    }
+
+    .action-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .action-button button {
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .action-button button:focus {
+      outline: none;
+    }
+
+    .action-button {
+      position: relative;
+      margin-top: 20px;
+    }
+
+    .action-button {
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 24px;
+      cursor: pointer;
+      position: absolute;
+      bottom: -21px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .action-button button:focus {
+      outline: none;
+    }
+
+    #gradient-card {
+      position: absolute;
+      top: -150px;
+      left: -310px;
+      width: 310%;
+      opacity: 40%;
+    }
+
+    .inner-card {
+      overflow: hidden;
+      position: relative;
+      padding: 20px;
+      border-radius: 20px;
+    }
+
+    .sidebar-div {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="sidebar">
+    <div class="sidebar-div">
+      <div>
+
+
+        <button id="cross-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 15 15">
+            <path fill="currentColor"
+              d="M3.64 2.27L7.5 6.13l3.84-3.84A.92.92 0 0 1 12 2a1 1 0 0 1 1 1a.9.9 0 0 1-.27.66L8.84 7.5l3.89 3.89A.9.9 0 0 1 13 12a1 1 0 0 1-1 1a.92.92 0 0 1-.69-.27L7.5 8.87l-3.85 3.85A.92.92 0 0 1 3 13a1 1 0 0 1-1-1a.9.9 0 0 1 .27-.66L6.16 7.5L2.27 3.61A.9.9 0 0 1 2 3a1 1 0 0 1 1-1c.24.003.47.1.64.27" />
+          </svg>
+        </button>
+        <div class="logo-container">
+          <img id="logo-img" src="logo.png" alt="" />
+          <p id="logo-heading">twiz</p>
+        </div>
+        <div class="gradient-background">
+          <img id="gradient" src="Gradient.png" alt="" />
+          <div class="profile-card">
+            <img src="https://i.pinimg.com/originals/b8/4c/15/b84c1524359fe01b397af3ae210c4f36.gif"
+              alt="Profile Picture" />
+            <p class="card-heading">Jacob Jones</p>
+            <button>Edit Profile</button>
+          </div>
+        </div>
+        <div class="menubar">
+          <div class="menu-item hover-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+              <path fill="white" d="M3 13h8V3H3zm0 8h8v-6H3zm10 0h8V11h-8zm0-18v6h8V3z" />
+            </svg>
+            <a href="Dashboard.html">Dashboard</a>
+          </div>
+          <div class="menu-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+              <path fill="white"
+                d="M2 6c0-1.505.78-3.08 2-4c0 .845.69 2 2 2a3 3 0 0 1 3 3c0 .386-.079.752-.212 1.091a74.515 74.515 0 0 1 2.191 1.808l-2.08 2.08a75.852 75.852 0 0 1-1.808-2.191A2.977 2.977 0 0 1 6 10c-2.21 0-4-1.79-4-4m12.152 6.848l1.341-1.341A4.446 4.446 0 0 0 17.5 12A4.5 4.5 0 0 0 22 7.5c0-.725-.188-1.401-.493-2.007L18 9l-2-2l3.507-3.507A4.446 4.446 0 0 0 17.5 3A4.5 4.5 0 0 0 13 7.5c0 .725.188 1.401.493 2.007L3 20l2 2l6.848-6.848a68.562 68.562 0 0 0 5.977 5.449l1.425 1.149l1.5-1.5l-1.149-1.425a68.562 68.562 0 0 0-5.449-5.977" />
+            </svg>
+            <a href="customize.html">Customize</a>
+          </div>
+          <div class="menu-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+              <path fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M10 5a2 2 0 1 0 4 0a2 2 0 1 0-4 0M3 19a2 2 0 1 0 4 0a2 2 0 1 0-4 0m14 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0m-8-5a3 3 0 1 0 6 0a3 3 0 1 0-6 0m3-7v4m-5.3 6.8l2.8-2m7.8 2l-2.8-2" />
+            </svg>
+            <a href="social.html">Socials</a>
+          </div>
+          <div class="menu-item ">
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+              <path fill="white"
+                d="M19.9 12.66a1 1 0 0 1 0-1.32l1.28-1.44a1 1 0 0 0 .12-1.17l-2-3.46a1 1 0 0 0-1.07-.48l-1.88.38a1 1 0 0 1-1.15-.66l-.61-1.83a1 1 0 0 0-.95-.68h-4a1 1 0 0 0-1 .68l-.56 1.83a1 1 0 0 1-1.15.66L5 4.79a1 1 0 0 0-1 .48L2 8.73a1 1 0 0 0 .1 1.17l1.27 1.44a1 1 0 0 1 0 1.32L2.1 14.1a1 1 0 0 0-.1 1.17l2 3.46a1 1 0 0 0 1.07.48l1.88-.38a1 1 0 0 1 1.15.66l.61 1.83a1 1 0 0 0 1 .68h4a1 1 0 0 0 .95-.68l.61-1.83a1 1 0 0 1 1.15-.66l1.88.38a1 1 0 0 0 1.07-.48l2-3.46a1 1 0 0 0-.12-1.17ZM18.41 14l.8.9l-1.28 2.22l-1.18-.24a3 3 0 0 0-3.45 2L12.92 20h-2.56L10 18.86a3 3 0 0 0-3.45-2l-1.18.24l-1.3-2.21l.8-.9a3 3 0 0 0 0-4l-.8-.9l1.28-2.2l1.18.24a3 3 0 0 0 3.45-2L10.36 4h2.56l.38 1.14a3 3 0 0 0 3.45 2l1.18-.24l1.28 2.22l-.8.9a3 3 0 0 0 0 3.98m-6.77-6a4 4 0 1 0 4 4a4 4 0 0 0-4-4m0 6a2 2 0 1 1 2-2a2 2 0 0 1-2 2" />
+            </svg>
+            <a href="setting.html">Settings</a>
+          </div>
+        </div>
+      </div>
+      <div class="card-outer">
+
+        <div class="card">
+          <div class="inner-card">
+            <img id="gradient-card" src="Gradient.png" alt="" />
+            <div class="content-card">
+              <p>Use our Premium Features Now!</p>
+              <div class="illustration">
+                <img src="discordLogo.png" alt="Person with a cup">
+              </div>
+
+
+            </div>
+          </div>
+          <button class="action-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+              <path fill="white"
+                d="m19.164 12l-6.207-6.207l-1.414 1.414L16.336 12l-4.793 4.793l1.414 1.414zm-5.65 0L7.307 5.793L5.893 7.207L10.686 12l-4.793 4.793l1.414 1.414z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="top-bar">
+    <button id="hamburger-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+        <path fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M3 17h18M3 12h18M3 7h18" />
+      </svg>
+    </button>
+    <div class="welcome">Welcome, Jacob</div>
+    <div class="top-btns">
+      <button id="upgrade">Upgrade</button>
+      <button id="not-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" style="
+        margin-top: 3px;
+    ">
+          <g fill="none">
+            <path
+              d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" />
+            <path fill="white"
+              d="M15 19a2 2 0 0 1-1.85 1.995L13 21h-2a2 2 0 0 1-1.995-1.85L9 19zM12 2a7 7 0 0 1 6.996 6.76L19 9v3.764l1.822 3.644a1.1 1.1 0 0 1-.869 1.586l-.115.006H4.162a1.1 1.1 0 0 1-1.03-1.487l.046-.105L5 12.764V9a7 7 0 0 1 7-7" />
+          </g>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="dashboard-tab">
+      <div class="top-info">
+        <div class="info-card">
+          <div class="icon-heading">
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 32 32">
+              <circle cx="16" cy="16" r="4" fill="white" />
+              <path fill="white"
+                d="M30.94 15.66A16.69 16.69 0 0 0 16 5A16.69 16.69 0 0 0 1.06 15.66a1 1 0 0 0 0 .68A16.69 16.69 0 0 0 16 27a16.69 16.69 0 0 0 14.94-10.66a1 1 0 0 0 0-.68M16 22.5a6.5 6.5 0 1 1 6.5-6.5a6.51 6.51 0 0 1-6.5 6.5" />
+            </svg>
+            <h4>Total Visits</h4>
+          </div>
+          <p>216K</p>
+        </div>
+        <div class="info-card">
+          <div class="icon-heading">
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 20 20">
+              <path fill="white" d="M12 6V2l7 7l-7 7v-4c-5 0-8.5 1.5-11 5l.8-3l.2-.4A12 12 0 0 1 12 6" />
+            </svg>
+            <h4>Shares</h4>
+          </div>
+          <p>2,221</p>
+        </div>
+        <div class="info-card">
+          <div class="icon-heading">
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 56 56">
+              <path fill="white"
+                d="M8.746 37.703h7.149l-2.133 10.594a4.05 4.05 0 0 0-.07.75c0 1.148.796 1.781 1.898 1.781c1.125 0 1.945-.61 2.18-1.758l2.296-11.367h11.086L29.02 48.297c-.07.234-.093.516-.093.75c0 1.148.797 1.781 1.922 1.781s1.945-.61 2.18-1.758L35.3 37.703h8.367c1.289 0 2.18-.937 2.18-2.203c0-1.031-.703-1.875-1.758-1.875h-7.946L38.63 21.25h8.203c1.29 0 2.18-.937 2.18-2.203c0-1.031-.703-1.875-1.758-1.875H39.45l1.922-9.445c.023-.141.07-.446.07-.75c0-1.149-.82-1.805-1.945-1.805c-1.312 0-1.898.726-2.133 1.828l-2.062 10.172H24.215l1.922-9.445c.023-.141.07-.446.07-.75c0-1.149-.844-1.805-1.945-1.805c-1.336 0-1.946.726-2.157 1.828l-2.062 10.172h-7.687c-1.29 0-2.18.984-2.18 2.273c0 1.055.703 1.805 1.758 1.805h7.289l-2.485 12.375h-7.57c-1.29 0-2.18.984-2.18 2.273c0 1.055.703 1.805 1.758 1.805m12.14-4.078l2.509-12.375H34.48l-2.508 12.375Z" />
+            </svg>
+            <h4>Number</h4>
+          </div>
+          <p>1,423</p>
+        </div>
+        <div class="info-card">
+          <div class="icon-heading">
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 256 256">
+              <path fill="white"
+                d="M240 94c0 70-103.79 126.66-108.21 129a8 8 0 0 1-7.58 0C119.79 220.66 16 164 16 94a62.07 62.07 0 0 1 62-62c20.65 0 38.73 8.88 50 23.89C139.27 40.88 157.35 32 178 32a62.07 62.07 0 0 1 62 62" />
+            </svg>
+            <h4>Loyalty</h4>
+          </div>
+          <p>78%</p>
+        </div>
+      </div>
+      <div class="dashboard">
+        <div class="chart-upper">
+          <div class="chart">
+            <h4>Monthly Views</h4>
+            <p>1,023</p>
+            <div style=" border-radius: 10px">
+              <div class="chart-container">
+                <canvas id="myChart" style="height: 200px !important;"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class=" notification">
+          <h4>Upgrade To Premium</h4>
+          <p>This is our most comprehensive and feature-rich plan</p>
+          <a href="#" download>Get Started Now</a>
+        </div>
+
+        <!-- Other content elements would go here -->
+      </div>
+      <div class="lower-cards">
+        <div class="account-container">
+          <div class="account-header">
+            <h2>Manage your account</h2>
+            <p>Change your email, username and more.</p>
+          </div>
+          <div class="account-action">
+            <i class="fas fa-user-edit"></i>
+            <span>Change Username</span>
+          </div>
+          <div class="account-action">
+            <i class="fas fa-id-badge"></i>
+            <span>Change Display Name</span>
+          </div>
+
+          <div class="account-action">
+            <i class="fas fa-cog"></i>
+            <span>Account Settings</span>
+          </div>
+
+          <div class="connection-container">
+            <div class="connection-header">Connections</div>
+            <a href="#" class="connect-button">
+              <i class="fab fa-discord"></i>
+              Connect
+            </a>
+          </div>
+        </div>
+        <div class="invoices-container">
+          <h2 class="invoice-header">Trending Users</h2>
+          <!-- Repeat this card 5 times -->
+          <div class="invoice-cards">
+            <div class="invoice-card">
+              <img src="https://i.pinimg.com/originals/b8/4c/15/b84c1524359fe01b397af3ae210c4f36.gif" alt="Avatar"
+                width="40" height="40" />
+              <div class="username">Vcc</div>
+              <div class="price">463 👁</div>
+              <button class="invoice-action">View</button>
+            </div>
+            <div class="invoice-card">
+              <img src="https://i.pinimg.com/originals/b8/4c/15/b84c1524359fe01b397af3ae210c4f36.gif" alt="Avatar"
+                width="40" height="40" />
+              <div class="username">Mosie</div>
+              <div class="price">392 👁</div>
+              <button class="invoice-action">View</button>
+            </div>
+            <div class="invoice-card">
+              <img src="https://i.pinimg.com/originals/b8/4c/15/b84c1524359fe01b397af3ae210c4f36.gif" alt="Avatar"
+                width="40" height="40" />
+              <div class="username">Danger</div>
+              <div class="price">362 👁</div>
+              <button class="invoice-action">View</button>
+            </div>
+            <div class="invoice-card">
+              <img src="https://i.pinimg.com/originals/b8/4c/15/b84c1524359fe01b397af3ae210c4f36.gif" alt="Avatar"
+                width="40" height="40" />
+              <div class="username">X</div>
+              <div class="price">284 👁</div>
+              <button class="invoice-action">View</button>
+            </div>
+            <div class="invoice-card">
+              <img src="https://i.pinimg.com/originals/b8/4c/15/b84c1524359fe01b397af3ae210c4f36.gif" alt="Avatar"
+                width="40" height="40" />
+              <div class="username">Nate</div>
+              <div class="price">45 👁</div>
+              <button class="invoice-action">View</button>
+            </div>
+            <!-- ... -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <script>
+    // ----------------------------------hamburger code 
+    document.addEventListener("DOMContentLoaded", function () {
+      const hamburgerBtn = document.getElementById("hamburger-btn");
+      const crossBtn = document.getElementById("cross-btn");
+      const sidebar = document.querySelector(".sidebar");
+
+      function toggleSidebar() {
+        sidebar.classList.toggle("active");
+        crossBtn.classList.toggle("show"); // Use class to manage visibility
+        hamburgerBtn.style.display = sidebar.classList.contains("active") ? "none" : "block";
+      }
+
+      hamburgerBtn.addEventListener("click", toggleSidebar);
+      crossBtn.addEventListener("click", function () {
+        sidebar.classList.remove("active");
+        this.classList.remove("show"); // Hide cross button
+        hamburgerBtn.style.display = "block"; // Show hamburger button
+      });
+    });
+
+
+    const ctx = document.getElementById('myChart').getContext('2d');
+
+    // Data for profile views
+    const profileViewsData = [70.56, 100, 0, 79, 200, 150, 0]; // Example data
+
+    // Function to determine point style
+    const pointStyle = profileViewsData.map(value => value === 0 ? 'rect' : 'circle');
+    const pointBackgroundColor = profileViewsData.map(value => value === 0 ? 'red' : 'rgba(0, 123, 255, 1)');
+    const pointBorderColor = profileViewsData.map(value => value === 0 ? 'darkred' : 'rgba(0, 123, 255, 1)');
+
+    const myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['13/01', '20/01', '27/01', '03/02', '10/02', '17/02', '24/02'], // Dates for the X-axis
+        datasets: [{
+          label: 'Profile Views',
+          data: profileViewsData, // Profile views data for the Y-axis
+          backgroundColor: 'rgba(0, 123, 255, 0.5)', // Area under line fill color
+          borderColor: 'rgba(0, 123, 255, 1)', // Line color
+          borderWidth: 2,
+          fill: true,
+          pointRadius: 5, // Point radius
+          pointStyle: pointStyle, // Custom point style
+          pointBackgroundColor: pointBackgroundColor, // Custom point background color
+          pointBorderColor: pointBorderColor, // Custom point border color
+          tension: 0.4 // Smoothes the line
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: false // Starts the scale at the minimum data value
+          },
+          x: {
+            // This will center the zero data points
+            grid: {
+              drawTicks: true,
+              drawOnChartArea: true, // Draw the grid lines on the chart
+              drawBorder: true, // Draw the border line
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: false // This will hide the label color box
+          },
+          tooltip: {
+            enabled: true, // Enables tooltips
+            mode: 'index',
+            intersect: false,
+            callbacks: {
+              label: function (context) {
+                let label = context.dataset.label || '';
+                if (label) {
+                  label += ': ';
+                }
+                if (context.parsed.y !== null) {
+                  label += context.parsed.y;
+                }
+                return label;
+              }
+            }
+          }
+        },
+        elements: {
+          line: {
+            tension: 0 // Disables bezier curves
+          },
+          point: {
+            pointStyle: 'circle' // Default point style
+          }
+        },
+        layout: {
+          padding: 20 // Adjust the padding as needed
+        },
+        maintainAspectRatio: false, // Ensures the chart is responsive
+        responsive: true, // Makes the chart responsive to window resizing
+        hover: {
+          mode: 'nearest',
+          intersect: true
+        }
+      }
+    });
+
+  </script>
+</body>
+
+</html>

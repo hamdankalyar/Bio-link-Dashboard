@@ -1,0 +1,369 @@
+<div class="content">
+
+    <div class="customize">
+        <div class="menu-container">
+            <div class="menu-items">
+                <div class="menu-item-header active" onclick="toggleMenu(this)">Profile<i class="fas fa-chevron-up"></i>
+                </div>
+                <div class="menu-item-content active">
+                    <div id="right-sidebar" class="right-sidebar">
+                        <form class="rightbar-form" action="#" method="post">
+                            <!-------------------the custom cuser----------------->
+                            <div class="sidebar-item">
+                                <div class="icon-label-container">
+                                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0 0 128 128">
+                                        <path d="M82.1 117.9c.4 0 .8-.1 1.2-.2 1.5-.6 2.3-2.4 1.6-3.9l-9.3-22.3h20.4c2 0 3.9-1.2 4.6-3.1.8-1.9.3-4-1.2-5.5L56.5 41.1c-1.4-1.4-3.6-1.8-5.4-1-1.9.8-3 2.6-3 4.6v60.2c0 2.1 1.2 3.9 3.2 4.7.6.2 1.2.4 1.8.4 1.4 0 2.7-.6 3.6-1.6l13.5-14.4 9.2 22.2C79.9 117.2 81 117.9 82.1 117.9zM40.6 22.7c.5 1.2 1.6 1.8 2.8 1.8.4 0 .8-.1 1.2-.2 1.5-.6 2.3-2.4 1.6-3.9L40.3 6.5c-.6-1.5-2.4-2.3-3.9-1.6-1.5.6-2.3 2.4-1.6 3.9L40.6 22.7zM16.7 32.4L31 36.9c.3.1.6.1.9.1 1.3 0 2.5-.8 2.9-2.1.5-1.6-.4-3.3-2-3.8l-14.3-4.5c-1.6-.5-3.3.4-3.8 2C14.2 30.2 15.1 31.9 16.7 32.4zM58.9 24.9c.4.2.9.3 1.4.3 1.1 0 2.1-.6 2.7-1.6l7-13.3c.8-1.5.2-3.3-1.3-4-1.5-.8-3.3-.2-4 1.3l-7 13.3C56.9 22.4 57.4 24.2 58.9 24.9z" fill="#ffffff"></path>
+                                    </svg>
+                                    <label for="custom-cursor-file"> Custom Cursor </label>
+                                </div>
+                                <span id="filename" class="file-name-display no-file">
+                                    <p>No file chosen</p>
+
+                                    <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 15L12 2M12 2L15 5.5M12 2L9 5.5" stroke="#777" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                        <path d="M8 22.0002H16C18.8284 22.0002 20.2426 22.0002 21.1213 21.1215C22 20.2429 22 18.8286 22 16.0002V15.0002C22 12.1718 22 10.7576 21.1213 9.8789C20.3529 9.11051 19.175 9.01406 17 9.00195M7 9.00195C4.82497 9.01406 3.64706 9.11051 2.87868 9.87889C2 10.7576 2 12.1718 2 15.0002L2 16.0002C2 18.8286 2 20.2429 2.87868 21.1215C3.17848 21.4213 3.54062 21.6188 4 21.749" stroke="#777" stroke-width="1.5" stroke-linecap="round"></path>
+                                    </svg>
+                                </span>
+                                <input type="file" id="custom-cursor-file" class="custom-file-upload" onchange="updateFileName()" name="">
+                            </div>
+                            <!-------------------custom dicord dropdown----------------->
+
+                            <div class="sidebar-item">
+                                <div class="icon-label-container discord-heading">
+                                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="18" height="23" viewBox="0 0 30 30">
+                                        <path d="M25.12,6.946c-2.424-1.948-6.257-2.278-6.419-2.292c-0.256-0.022-0.499,0.123-0.604,0.357 c-0.004,0.008-0.218,0.629-0.425,1.228c2.817,0.493,4.731,1.587,4.833,1.647c0.478,0.278,0.638,0.891,0.359,1.368 C22.679,9.572,22.344,9.75,22,9.75c-0.171,0-0.343-0.043-0.501-0.135C21.471,9.598,18.663,8,15.002,8 C11.34,8,8.531,9.599,8.503,9.615C8.026,9.892,7.414,9.729,7.137,9.251C6.86,8.775,7.021,8.164,7.497,7.886 c0.102-0.06,2.023-1.158,4.848-1.65c-0.218-0.606-0.438-1.217-0.442-1.225c-0.105-0.235-0.348-0.383-0.604-0.357 c-0.162,0.013-3.995,0.343-6.451,2.318C3.564,8.158,1,15.092,1,21.087c0,0.106,0.027,0.209,0.08,0.301 c1.771,3.11,6.599,3.924,7.699,3.959c0.007,0.001,0.013,0.001,0.019,0.001c0.194,0,0.377-0.093,0.492-0.25l1.19-1.612 c-2.61-0.629-3.99-1.618-4.073-1.679c-0.444-0.327-0.54-0.953-0.213-1.398c0.326-0.443,0.95-0.541,1.394-0.216 C7.625,20.217,10.172,22,15,22c4.847,0,7.387-1.79,7.412-1.808c0.444-0.322,1.07-0.225,1.395,0.221 c0.324,0.444,0.23,1.066-0.212,1.392c-0.083,0.061-1.456,1.048-4.06,1.677l1.175,1.615c0.115,0.158,0.298,0.25,0.492,0.25 c0.007,0,0.013,0,0.019-0.001c1.101-0.035,5.929-0.849,7.699-3.959c0.053-0.092,0.08-0.195,0.08-0.301 C29,15.092,26.436,8.158,25.12,6.946z M11,19c-1.105,0-2-1.119-2-2.5S9.895,14,11,14s2,1.119,2,2.5S12.105,19,11,19z M19,19 c-1.105,0-2-1.119-2-2.5s0.895-2.5,2-2.5s2,1.119,2,2.5S20.105,19,19,19z" stroke="white" fill="white"></path>
+                                    </svg>
+
+                                    <label for=" discord-presence-select">
+                                        <p>Discord Presence</p>
+                                    </label>
+                                </div>
+                                <input name="" hidden="" id="discord-hidden-input">
+                                <div id="dropdown" class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span id="discord-input" class="dropdown-title">None</span>
+                                        <div class="dropdown-icon">
+                                            <svg class="dropdown-arrow" width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z" fill="#777"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown-list" style="display: none;">
+                                        <div class="dropdown-item">None</div>
+                                        <div class="dropdown-item">Enabled</div>
+                                        <div class="dropdown-item">Disable</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-------------------custom picture opacity slider----------------->
+                            <div class="sidebar-item">
+                                <div class="icon-label-container profile-opacity-heading">
+                                    <svg fill="#ffff" width="22px" height="21px" viewBox="0 0 32 32" id="icon" xmlns="http://www.w3.org/2000/svg">
+                                        <defs>
+                                            <style>
+                                                .cls-1 {
+                                                    fill: none;
+                                                }
+                                            </style>
+                                        </defs>
+                                        <title>opacity</title>
+                                        <rect x="6" y="6" width="4" height="4"></rect>
+                                        <rect x="10" y="10" width="4" height="4"></rect>
+                                        <rect x="14" y="6" width="4" height="4"></rect>
+                                        <rect x="22" y="6" width="4" height="4"></rect>
+                                        <rect x="6" y="14" width="4" height="4"></rect>
+                                        <rect x="14" y="14" width="4" height="4"></rect>
+                                        <rect x="22" y="14" width="4" height="4"></rect>
+                                        <rect x="6" y="22" width="4" height="4"></rect>
+                                        <rect x="14" y="22" width="4" height="4"></rect>
+                                        <rect x="22" y="22" width="4" height="4"></rect>
+                                        <rect x="18" y="10" width="4" height="4"></rect>
+                                        <rect x="10" y="18" width="4" height="4"></rect>
+                                        <rect x="18" y="18" width="4" height="4"></rect>
+                                        <rect id="_Transparent_Rectangle_" data-name="<Transparent Rectangle>" class="cls-1" width="32" height="32"></rect>
+                                    </svg>
+
+                                    <label class="slider-label" for="profile-opacity-range">Profile Opacity</label>
+                                </div>
+
+                                <div class="ranger-container">
+                                    <div class="rangeBox">
+                                        <div class="range-row">
+                                            <input class="range" type="range" value="0" min="0" max="100" name="">
+                                        </div>
+                                        <div id="rangeVal" class="result">0</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-------------------custom Background Effects----------------->
+
+                            <div class="sidebar-item">
+                                <div class="icon-label-container effect-heading">
+                                    <svg width="17px" height="17px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M14.5 7l.9 3.6 3.6.9-3.6.9-.9 3.6-.9-3.6-3.6-.9 3.6-.9zm-1.725 2.775L5.877 11.5l6.898 1.725 1.725 6.898 1.725-6.898 6.898-1.725-6.898-1.725L14.5 2.877zM6 4l-.5-4L5 4l-4 .5L5 5l.5 4L6 5l4-.5zm1 14l-.5-4-.5 4-4 .5 4 .5.5 4 .5-4 4-.5z" stroke="white"></path>
+                                        <path fill="none" d="M0 0h24v24H0z"></path>
+                                    </svg>
+
+                                    <label for="background-effects-select">
+                                        <p>Background Effects</p>
+                                    </label>
+                                </div>
+                                <input name="" hidden="" id="effect-hidden-input">
+                                <div id="dropdown-effect" class="dropdown-effect">
+                                    <div class="dropdown-effect-header">
+                                        <span id="discord-input-effect" class="dropdown-effect-title">None</span>
+                                        <div class="dropdown-effect-icon">
+                                            <svg class="dropdown-effect-arrow" width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z" fill="#777"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown-effect-list" style="display: none;">
+                                        <div class="dropdown-effect-item">None</div>
+                                        <div class="dropdown-effect-item">Snowflakes</div>
+                                        <div class="dropdown-effect-item">
+                                            Bats (COMING SOON)
+                                        </div>
+                                        <div class="dropdown-effect-item">TV (COMING SOON)</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-------------------Custom Badges----------------->
+                            <div class="sidebar-item">
+                                <div class="icon-label-container badge-heading">
+                                    <svg width="17px" height="17px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M14.5 7l.9 3.6 3.6.9-3.6.9-.9 3.6-.9-3.6-3.6-.9 3.6-.9zm-1.725 2.775L5.877 11.5l6.898 1.725 1.725 6.898 1.725-6.898 6.898-1.725-6.898-1.725L14.5 2.877zM6 4l-.5-4L5 4l-4 .5L5 5l.5 4L6 5l4-.5zm1 14l-.5-4-.5 4-4 .5 4 .5.5 4 .5-4 4-.5z" stroke="white"></path>
+                                        <path fill="none" d="M0 0h24v24H0z"></path>
+                                    </svg>
+                                    <label for="background-badges-select">
+                                        <p>Badges</p>
+                                    </label>
+                                </div>
+                                <input name="" hidden="" id="badge-hidden-input">
+                                <div id="dropdown-badge" class="dropdown-badge">
+                                    <div class="dropdown-badge-header">
+                                        <span id="discord-input-badge" class="dropdown-badge-title">None</span>
+                                        <div class="dropdown-badge-icon">
+                                            <svg class="dropdown-badge-arrow" width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z" fill="#777"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown-badge-list" style="display: none;">
+                                        <div class="dropdown-badge-item">None</div>
+                                        <div class="dropdown-badge-item">Enable</div>
+                                        <div class="dropdown-badge-item">Disable</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-------------------Custom font----------------->
+                            <div class="sidebar-item font-container">
+                                <div class="icon-label-container font-heading">
+                                    <svg width="17px" height="17px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M14.5 7l.9 3.6 3.6.9-3.6.9-.9 3.6-.9-3.6-3.6-.9 3.6-.9zm-1.725 2.775L5.877 11.5l6.898 1.725 1.725 6.898 1.725-6.898 6.898-1.725-6.898-1.725L14.5 2.877zM6 4l-.5-4L5 4l-4 .5L5 5l.5 4L6 5l4-.5zm1 14l-.5-4-.5 4-4 .5 4 .5.5 4 .5-4 4-.5z" stroke="white"></path>
+                                        <path fill="none" d="M0 0h24v24H0z"></path>
+                                    </svg>
+                                    <label for="background-fonts-select">
+                                        <p>Custom Fonts</p>
+                                    </label>
+                                </div>
+                                <input name="" hidden="" id="font-hidden-input">
+                                <div id="dropdown-font" class="dropdown-font">
+                                    <div class="dropdown-font-header">
+                                        <span id="discord-input-font" class="dropdown-font-title">None</span>
+                                        <div class="dropdown-font-icon">
+                                            <svg class="dropdown-font-arrow" width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z" fill="#777"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown-font-list" style="display: none;">
+                                        <div class="dropdown-font-item">None</div>
+                                        <div class="dropdown-font-item">Satoshi</div>
+                                        <div class="dropdown-font-item">Hacker</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-items">
+                <div class="menu-item-header" onclick="toggleMenu(this)">Effects<i class="fas fa-chevron-up"></i>
+                </div>
+                <div class="menu-item-content">
+                    <div id="right-sidebar" class="right-sidebar">
+                        <form class="rightbar-form" action="#" method="post">
+                            <!-------------------Color theme----------------->
+                            <div class="sidebar-item">
+                                <div class="icon-label-container color-heading">
+                                    <svg width="17px" height="17px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M14 12.5001C14 13.3285 13.3284 14.0001 12.5 14.0001C11.6716 14.0001 11 13.3285 11 12.5001C11 11.6717 11.6716 11.0001 12.5 11.0001C13.3284 11.0001 14 11.6717 14 12.5001Z" fill="#ffff"></path>
+                                        <path d="M16.5 10.0001C17.3284 10.0001 18 9.32854 18 8.50011C18 7.67169 17.3284 7.00011 16.5 7.00011C15.6716 7.00011 15 7.67169 15 8.50011C15 9.32854 15.6716 10.0001 16.5 10.0001Z" fill="#ffff"></path>
+                                        <path d="M13 6.50011C13 7.32854 12.3284 8.00011 11.5 8.00011C10.6716 8.00011 10 7.32854 10 6.50011C10 5.67169 10.6716 5.00011 11.5 5.00011C12.3284 5.00011 13 5.67169 13 6.50011Z" fill="#ffff"></path>
+                                        <path d="M7.50001 12.0001C8.32844 12.0001 9.00001 11.3285 9.00001 10.5001C9.00001 9.67169 8.32844 9.00011 7.50001 9.00011C6.67158 9.00011 6.00001 9.67169 6.00001 10.5001C6.00001 11.3285 6.67158 12.0001 7.50001 12.0001Z" fill="#ffff"></path>
+                                        <path d="M14 17.5001C14 18.3285 13.3284 19.0001 12.5 19.0001C11.6716 19.0001 11 18.3285 11 17.5001C11 16.6717 11.6716 16.0001 12.5 16.0001C13.3284 16.0001 14 16.6717 14 17.5001Z" fill="#ffff"></path>
+                                        <path d="M7.50001 17.0001C8.32844 17.0001 9.00001 16.3285 9.00001 15.5001C9.00001 14.6717 8.32844 14.0001 7.50001 14.0001C6.67158 14.0001 6.00001 14.6717 6.00001 15.5001C6.00001 16.3285 6.67158 17.0001 7.50001 17.0001Z" fill="#ffff"></path>
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M11.5017 1.02215C15.4049 0.791746 19.5636 2.32444 21.8087 5.41131C22.5084 6.37324 22.8228 7.63628 22.6489 8.83154C22.471 10.054 21.7734 11.2315 20.4472 11.8945C19.6389 12.2987 18.7731 12.9466 18.2401 13.668C17.7158 14.3778 17.6139 14.9917 17.8944 15.5529C18.4231 16.6102 18.8894 17.9257 18.8106 19.1875C18.7699 19.8375 18.5828 20.4946 18.1664 21.0799C17.7488 21.6667 17.1448 22.1192 16.3714 22.4286C14.6095 23.1333 12.6279 23.1643 10.8081 22.8207C8.98579 22.4765 7.24486 21.7421 5.92656 20.8194C4.00568 19.4748 2.47455 17.6889 1.71371 15.4464C0.9504 13.1965 0.995912 10.5851 2.06024 7.65803C3.64355 3.30372 7.56248 1.25469 11.5017 1.02215ZM11.6196 3.01868C8.26589 3.21665 5.18483 4.9176 3.93984 8.34149C3.00414 10.9148 3.01388 13.0536 3.60768 14.8038C4.20395 16.5613 5.42282 18.0255 7.07347 19.1809C8.14405 19.9303 9.6169 20.5604 11.1792 20.8554C12.7442 21.151 14.3181 21.0959 15.6286 20.5716C16.308 20.2999 16.7678 19.8099 16.8145 19.0627C16.8606 18.3245 16.5769 17.3901 16.1056 16.4473C15.3639 14.9639 15.8542 13.5318 16.6315 12.4796C17.4002 11.4391 18.5455 10.6093 19.5528 10.1057C20.2266 9.76878 20.5747 9.19623 20.6697 8.54355C20.7686 7.86365 20.5831 7.12638 20.1913 6.58769C18.4364 4.17486 15.0093 2.81858 11.6196 3.01868Z" fill="#ffff"></path>
+                                    </svg>
+                                    <label for="background-color-select">
+                                        <p>Text &amp; Icon Color</p>
+                                    </label>
+                                </div>
+                                <div class="color-input-container">
+                                    <div class="picker-span">
+                                        <input type="color" id="color-picker" class="color-input" value="#ffffff" name="">
+                                        <span id="result">#a817a6</span>
+                                    </div>
+
+                                    <i class="fas fa-eye-dropper color-dropper-icon" onclick="openEyeDropper()"></i>
+                                </div>
+                            </div>
+                            <div class="sidebar-item">
+                                <div class="icon-label-container textInputHeading discord-heading">
+                                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="18" height="23" viewBox="0 0 30 30">
+                                        <path d="M25.12,6.946c-2.424-1.948-6.257-2.278-6.419-2.292c-0.256-0.022-0.499,0.123-0.604,0.357 c-0.004,0.008-0.218,0.629-0.425,1.228c2.817,0.493,4.731,1.587,4.833,1.647c0.478,0.278,0.638,0.891,0.359,1.368 C22.679,9.572,22.344,9.75,22,9.75c-0.171,0-0.343-0.043-0.501-0.135C21.471,9.598,18.663,8,15.002,8 C11.34,8,8.531,9.599,8.503,9.615C8.026,9.892,7.414,9.729,7.137,9.251C6.86,8.775,7.021,8.164,7.497,7.886 c0.102-0.06,2.023-1.158,4.848-1.65c-0.218-0.606-0.438-1.217-0.442-1.225c-0.105-0.235-0.348-0.383-0.604-0.357 c-0.162,0.013-3.995,0.343-6.451,2.318C3.564,8.158,1,15.092,1,21.087c0,0.106,0.027,0.209,0.08,0.301 c1.771,3.11,6.599,3.924,7.699,3.959c0.007,0.001,0.013,0.001,0.019,0.001c0.194,0,0.377-0.093,0.492-0.25l1.19-1.612 c-2.61-0.629-3.99-1.618-4.073-1.679c-0.444-0.327-0.54-0.953-0.213-1.398c0.326-0.443,0.95-0.541,1.394-0.216 C7.625,20.217,10.172,22,15,22c4.847,0,7.387-1.79,7.412-1.808c0.444-0.322,1.07-0.225,1.395,0.221 c0.324,0.444,0.23,1.066-0.212,1.392c-0.083,0.061-1.456,1.048-4.06,1.677l1.175,1.615c0.115,0.158,0.298,0.25,0.492,0.25 c0.007,0,0.013,0,0.019-0.001c1.101-0.035,5.929-0.849,7.699-3.959c0.053-0.092,0.08-0.195,0.08-0.301 C29,15.092,26.436,8.158,25.12,6.946z M11,19c-1.105,0-2-1.119-2-2.5S9.895,14,11,14s2,1.119,2,2.5S12.105,19,11,19z M19,19 c-1.105,0-2-1.119-2-2.5s0.895-2.5,2-2.5s2,1.119,2,2.5S20.105,19,19,19z" stroke="white" fill="white"></path>
+                                    </svg>
+
+                                    <label for=" discord-presence-select">
+                                        <p>Description</p>
+                                    </label>
+                                </div>
+                                <div id="dropdown" class="dropdown">
+                                    <input type="text" class="textInput" placeholder="text here" name="">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-items">
+                <div class="menu-item-header" onclick="toggleMenu(this)">Effects<i class="fas fa-chevron-up"></i>
+                </div>
+                <div class="menu-item-content">
+                    <div id="right-sidebar" class="right-sidebar">
+                        <form class="rightbar-form" action="#" method="post">
+                            <!-------------------Color theme----------------->
+                            <div class="sidebar-item">
+                                <div class="icon-label-container color-heading">
+                                    <svg width="17px" height="17px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M14 12.5001C14 13.3285 13.3284 14.0001 12.5 14.0001C11.6716 14.0001 11 13.3285 11 12.5001C11 11.6717 11.6716 11.0001 12.5 11.0001C13.3284 11.0001 14 11.6717 14 12.5001Z" fill="#ffff"></path>
+                                        <path d="M16.5 10.0001C17.3284 10.0001 18 9.32854 18 8.50011C18 7.67169 17.3284 7.00011 16.5 7.00011C15.6716 7.00011 15 7.67169 15 8.50011C15 9.32854 15.6716 10.0001 16.5 10.0001Z" fill="#ffff"></path>
+                                        <path d="M13 6.50011C13 7.32854 12.3284 8.00011 11.5 8.00011C10.6716 8.00011 10 7.32854 10 6.50011C10 5.67169 10.6716 5.00011 11.5 5.00011C12.3284 5.00011 13 5.67169 13 6.50011Z" fill="#ffff"></path>
+                                        <path d="M7.50001 12.0001C8.32844 12.0001 9.00001 11.3285 9.00001 10.5001C9.00001 9.67169 8.32844 9.00011 7.50001 9.00011C6.67158 9.00011 6.00001 9.67169 6.00001 10.5001C6.00001 11.3285 6.67158 12.0001 7.50001 12.0001Z" fill="#ffff"></path>
+                                        <path d="M14 17.5001C14 18.3285 13.3284 19.0001 12.5 19.0001C11.6716 19.0001 11 18.3285 11 17.5001C11 16.6717 11.6716 16.0001 12.5 16.0001C13.3284 16.0001 14 16.6717 14 17.5001Z" fill="#ffff"></path>
+                                        <path d="M7.50001 17.0001C8.32844 17.0001 9.00001 16.3285 9.00001 15.5001C9.00001 14.6717 8.32844 14.0001 7.50001 14.0001C6.67158 14.0001 6.00001 14.6717 6.00001 15.5001C6.00001 16.3285 6.67158 17.0001 7.50001 17.0001Z" fill="#ffff"></path>
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M11.5017 1.02215C15.4049 0.791746 19.5636 2.32444 21.8087 5.41131C22.5084 6.37324 22.8228 7.63628 22.6489 8.83154C22.471 10.054 21.7734 11.2315 20.4472 11.8945C19.6389 12.2987 18.7731 12.9466 18.2401 13.668C17.7158 14.3778 17.6139 14.9917 17.8944 15.5529C18.4231 16.6102 18.8894 17.9257 18.8106 19.1875C18.7699 19.8375 18.5828 20.4946 18.1664 21.0799C17.7488 21.6667 17.1448 22.1192 16.3714 22.4286C14.6095 23.1333 12.6279 23.1643 10.8081 22.8207C8.98579 22.4765 7.24486 21.7421 5.92656 20.8194C4.00568 19.4748 2.47455 17.6889 1.71371 15.4464C0.9504 13.1965 0.995912 10.5851 2.06024 7.65803C3.64355 3.30372 7.56248 1.25469 11.5017 1.02215ZM11.6196 3.01868C8.26589 3.21665 5.18483 4.9176 3.93984 8.34149C3.00414 10.9148 3.01388 13.0536 3.60768 14.8038C4.20395 16.5613 5.42282 18.0255 7.07347 19.1809C8.14405 19.9303 9.6169 20.5604 11.1792 20.8554C12.7442 21.151 14.3181 21.0959 15.6286 20.5716C16.308 20.2999 16.7678 19.8099 16.8145 19.0627C16.8606 18.3245 16.5769 17.3901 16.1056 16.4473C15.3639 14.9639 15.8542 13.5318 16.6315 12.4796C17.4002 11.4391 18.5455 10.6093 19.5528 10.1057C20.2266 9.76878 20.5747 9.19623 20.6697 8.54355C20.7686 7.86365 20.5831 7.12638 20.1913 6.58769C18.4364 4.17486 15.0093 2.81858 11.6196 3.01868Z" fill="#ffff"></path>
+                                    </svg>
+                                    <label for="background-color-select">
+                                        <p>Text &amp; Icon Color</p>
+                                    </label>
+                                </div>
+                                <div class="color-input-container">
+                                    <div class="picker-span">
+                                        <input type="color" id="color-picker" class="color-input" value="#ffffff" name="">
+                                        <span id="result">#a817a6</span>
+                                    </div>
+
+                                    <i class="fas fa-eye-dropper color-dropper-icon" onclick="openEyeDropper()"></i>
+                                </div>
+                            </div>
+                            <div class="sidebar-item">
+                                <div class="icon-label-container textInputHeading discord-heading">
+                                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="18" height="23" viewBox="0 0 30 30">
+                                        <path d="M25.12,6.946c-2.424-1.948-6.257-2.278-6.419-2.292c-0.256-0.022-0.499,0.123-0.604,0.357 c-0.004,0.008-0.218,0.629-0.425,1.228c2.817,0.493,4.731,1.587,4.833,1.647c0.478,0.278,0.638,0.891,0.359,1.368 C22.679,9.572,22.344,9.75,22,9.75c-0.171,0-0.343-0.043-0.501-0.135C21.471,9.598,18.663,8,15.002,8 C11.34,8,8.531,9.599,8.503,9.615C8.026,9.892,7.414,9.729,7.137,9.251C6.86,8.775,7.021,8.164,7.497,7.886 c0.102-0.06,2.023-1.158,4.848-1.65c-0.218-0.606-0.438-1.217-0.442-1.225c-0.105-0.235-0.348-0.383-0.604-0.357 c-0.162,0.013-3.995,0.343-6.451,2.318C3.564,8.158,1,15.092,1,21.087c0,0.106,0.027,0.209,0.08,0.301 c1.771,3.11,6.599,3.924,7.699,3.959c0.007,0.001,0.013,0.001,0.019,0.001c0.194,0,0.377-0.093,0.492-0.25l1.19-1.612 c-2.61-0.629-3.99-1.618-4.073-1.679c-0.444-0.327-0.54-0.953-0.213-1.398c0.326-0.443,0.95-0.541,1.394-0.216 C7.625,20.217,10.172,22,15,22c4.847,0,7.387-1.79,7.412-1.808c0.444-0.322,1.07-0.225,1.395,0.221 c0.324,0.444,0.23,1.066-0.212,1.392c-0.083,0.061-1.456,1.048-4.06,1.677l1.175,1.615c0.115,0.158,0.298,0.25,0.492,0.25 c0.007,0,0.013,0,0.019-0.001c1.101-0.035,5.929-0.849,7.699-3.959c0.053-0.092,0.08-0.195,0.08-0.301 C29,15.092,26.436,8.158,25.12,6.946z M11,19c-1.105,0-2-1.119-2-2.5S9.895,14,11,14s2,1.119,2,2.5S12.105,19,11,19z M19,19 c-1.105,0-2-1.119-2-2.5s0.895-2.5,2-2.5s2,1.119,2,2.5S20.105,19,19,19z" stroke="white" fill="white"></path>
+                                    </svg>
+
+                                    <label for=" discord-presence-select">
+                                        <p>Description</p>
+                                    </label>
+                                </div>
+                                <div id="dropdown" class="dropdown">
+                                    <input type="text" class="textInput" placeholder="text here" name="">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div><div class="menu-items">
+                <div class="menu-item-header" onclick="toggleMenu(this)">Effects<i class="fas fa-chevron-up"></i>
+                </div>
+                <div class="menu-item-content">
+                    <div id="right-sidebar" class="right-sidebar">
+                        <form class="rightbar-form" action="#" method="post">
+                            <!-------------------Color theme----------------->
+                            <div class="sidebar-item">
+                                <div class="icon-label-container color-heading">
+                                    <svg width="17px" height="17px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M14 12.5001C14 13.3285 13.3284 14.0001 12.5 14.0001C11.6716 14.0001 11 13.3285 11 12.5001C11 11.6717 11.6716 11.0001 12.5 11.0001C13.3284 11.0001 14 11.6717 14 12.5001Z" fill="#ffff"></path>
+                                        <path d="M16.5 10.0001C17.3284 10.0001 18 9.32854 18 8.50011C18 7.67169 17.3284 7.00011 16.5 7.00011C15.6716 7.00011 15 7.67169 15 8.50011C15 9.32854 15.6716 10.0001 16.5 10.0001Z" fill="#ffff"></path>
+                                        <path d="M13 6.50011C13 7.32854 12.3284 8.00011 11.5 8.00011C10.6716 8.00011 10 7.32854 10 6.50011C10 5.67169 10.6716 5.00011 11.5 5.00011C12.3284 5.00011 13 5.67169 13 6.50011Z" fill="#ffff"></path>
+                                        <path d="M7.50001 12.0001C8.32844 12.0001 9.00001 11.3285 9.00001 10.5001C9.00001 9.67169 8.32844 9.00011 7.50001 9.00011C6.67158 9.00011 6.00001 9.67169 6.00001 10.5001C6.00001 11.3285 6.67158 12.0001 7.50001 12.0001Z" fill="#ffff"></path>
+                                        <path d="M14 17.5001C14 18.3285 13.3284 19.0001 12.5 19.0001C11.6716 19.0001 11 18.3285 11 17.5001C11 16.6717 11.6716 16.0001 12.5 16.0001C13.3284 16.0001 14 16.6717 14 17.5001Z" fill="#ffff"></path>
+                                        <path d="M7.50001 17.0001C8.32844 17.0001 9.00001 16.3285 9.00001 15.5001C9.00001 14.6717 8.32844 14.0001 7.50001 14.0001C6.67158 14.0001 6.00001 14.6717 6.00001 15.5001C6.00001 16.3285 6.67158 17.0001 7.50001 17.0001Z" fill="#ffff"></path>
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M11.5017 1.02215C15.4049 0.791746 19.5636 2.32444 21.8087 5.41131C22.5084 6.37324 22.8228 7.63628 22.6489 8.83154C22.471 10.054 21.7734 11.2315 20.4472 11.8945C19.6389 12.2987 18.7731 12.9466 18.2401 13.668C17.7158 14.3778 17.6139 14.9917 17.8944 15.5529C18.4231 16.6102 18.8894 17.9257 18.8106 19.1875C18.7699 19.8375 18.5828 20.4946 18.1664 21.0799C17.7488 21.6667 17.1448 22.1192 16.3714 22.4286C14.6095 23.1333 12.6279 23.1643 10.8081 22.8207C8.98579 22.4765 7.24486 21.7421 5.92656 20.8194C4.00568 19.4748 2.47455 17.6889 1.71371 15.4464C0.9504 13.1965 0.995912 10.5851 2.06024 7.65803C3.64355 3.30372 7.56248 1.25469 11.5017 1.02215ZM11.6196 3.01868C8.26589 3.21665 5.18483 4.9176 3.93984 8.34149C3.00414 10.9148 3.01388 13.0536 3.60768 14.8038C4.20395 16.5613 5.42282 18.0255 7.07347 19.1809C8.14405 19.9303 9.6169 20.5604 11.1792 20.8554C12.7442 21.151 14.3181 21.0959 15.6286 20.5716C16.308 20.2999 16.7678 19.8099 16.8145 19.0627C16.8606 18.3245 16.5769 17.3901 16.1056 16.4473C15.3639 14.9639 15.8542 13.5318 16.6315 12.4796C17.4002 11.4391 18.5455 10.6093 19.5528 10.1057C20.2266 9.76878 20.5747 9.19623 20.6697 8.54355C20.7686 7.86365 20.5831 7.12638 20.1913 6.58769C18.4364 4.17486 15.0093 2.81858 11.6196 3.01868Z" fill="#ffff"></path>
+                                    </svg>
+                                    <label for="background-color-select">
+                                        <p>Text &amp; Icon Color</p>
+                                    </label>
+                                </div>
+                                <div class="color-input-container">
+                                    <div class="picker-span">
+                                        <input type="color" id="color-picker" class="color-input" value="#ffffff" name="">
+                                        <span id="result">#a817a6</span>
+                                    </div>
+
+                                    <i class="fas fa-eye-dropper color-dropper-icon" onclick="openEyeDropper()"></i>
+                                </div>
+                            </div>
+                            <div class="sidebar-item">
+                                <div class="icon-label-container textInputHeading discord-heading">
+                                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="18" height="23" viewBox="0 0 30 30">
+                                        <path d="M25.12,6.946c-2.424-1.948-6.257-2.278-6.419-2.292c-0.256-0.022-0.499,0.123-0.604,0.357 c-0.004,0.008-0.218,0.629-0.425,1.228c2.817,0.493,4.731,1.587,4.833,1.647c0.478,0.278,0.638,0.891,0.359,1.368 C22.679,9.572,22.344,9.75,22,9.75c-0.171,0-0.343-0.043-0.501-0.135C21.471,9.598,18.663,8,15.002,8 C11.34,8,8.531,9.599,8.503,9.615C8.026,9.892,7.414,9.729,7.137,9.251C6.86,8.775,7.021,8.164,7.497,7.886 c0.102-0.06,2.023-1.158,4.848-1.65c-0.218-0.606-0.438-1.217-0.442-1.225c-0.105-0.235-0.348-0.383-0.604-0.357 c-0.162,0.013-3.995,0.343-6.451,2.318C3.564,8.158,1,15.092,1,21.087c0,0.106,0.027,0.209,0.08,0.301 c1.771,3.11,6.599,3.924,7.699,3.959c0.007,0.001,0.013,0.001,0.019,0.001c0.194,0,0.377-0.093,0.492-0.25l1.19-1.612 c-2.61-0.629-3.99-1.618-4.073-1.679c-0.444-0.327-0.54-0.953-0.213-1.398c0.326-0.443,0.95-0.541,1.394-0.216 C7.625,20.217,10.172,22,15,22c4.847,0,7.387-1.79,7.412-1.808c0.444-0.322,1.07-0.225,1.395,0.221 c0.324,0.444,0.23,1.066-0.212,1.392c-0.083,0.061-1.456,1.048-4.06,1.677l1.175,1.615c0.115,0.158,0.298,0.25,0.492,0.25 c0.007,0,0.013,0,0.019-0.001c1.101-0.035,5.929-0.849,7.699-3.959c0.053-0.092,0.08-0.195,0.08-0.301 C29,15.092,26.436,8.158,25.12,6.946z M11,19c-1.105,0-2-1.119-2-2.5S9.895,14,11,14s2,1.119,2,2.5S12.105,19,11,19z M19,19 c-1.105,0-2-1.119-2-2.5s0.895-2.5,2-2.5s2,1.119,2,2.5S20.105,19,19,19z" stroke="white" fill="white"></path>
+                                    </svg>
+
+                                    <label for=" discord-presence-select">
+                                        <p>Description</p>
+                                    </label>
+                                </div>
+                                <div id="dropdown" class="dropdown">
+                                    <input type="text" class="textInput" placeholder="text here" name="">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div><div class="menu-items">
+                <div class="menu-item-header" onclick="toggleMenu(this)">Color<i class="fas fa-chevron-up"></i>
+                </div>
+                <div class="menu-item-content">
+                    <div id="right-sidebar" class="right-sidebar">
+                        <form class="rightbar-form" action="#" method="post">
+                            <div class="toggle-container">
+                                <span class="toggle-label">Monochrome Icons</span>
+                                <label class="switch">
+                                    <input type="checkbox" name="" id="monochrome-toggle">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-container">
+                                <span class="toggle-label">Monochrome Icons</span>
+                                <label class="switch">
+                                    <input type="checkbox" name="" id="monochrome-toggle">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="add-item">
+                <i class="fas fa-plus"></i>
+                Save
+            </div>
+        </div>
+    </div>
+</div>
